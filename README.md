@@ -1,6 +1,7 @@
 # HOWTO
 
-1. Document your codes as detail as possible.
-2. Clone this repository.
-3. Overide this README & provide instructions on how to compile and run your code in simulator mode within Android Studio or Xcode.
-3. Commit your codes & create a pull request.
+1. Go to /jsonserver and run "npm install"
+2. Run "json-server -w db.json" to start a JSON Server
+3. Go to /SDPropertiesApp and run "npm install"
+4. Go to /SDPropertiesApp/ios and run "pod install"
+5. Return to /SDPropertiesApp and run "npx react-native run-ios"
