@@ -1,112 +1,69 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow strict-local
- */
-
 import React from 'react';
-import type {Node} from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import LinearGradient from 'react-native-linear-gradient';
+import DashboardScreen from './src/screens/DashboardScreen';
+import PropertyScreen from './src/screens/PropertyScreen';
+import VisitorEntryScreen from './src/screens/VisitorEntryScreen';
+import MyVisitorsScreen from './src/screens/MyVisitorsScreen';
+import { Provider } from './src/context/PropertyContext';
+import { navigationRef } from './RootNavigation';
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+const Stack = createStackNavigator();
 
-const Section = ({children, title}): Node => {
-  const isDarkMode = useColorScheme() === 'dark';
+function MainStack() {
   return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
+    <Stack.Navigator>
+      <Stack.Screen
+        name="Dashboard"
+        component={DashboardScreen}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="Property"
+        component={PropertyScreen}
+        options={{
+          headerBackground: () => (
+            <LinearGradient start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} colors={['#ff842e', '#fa5320']} style={{ flex: 1 }} />
+          ),
+          headerTintColor: '#fff',
+          headerBackTitleVisible: false
+        }}
+      />
+      <Stack.Screen
+        name="Visitor Entry"
+        component={VisitorEntryScreen}
+        options={{
+          headerBackground: () => (
+            <LinearGradient start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} colors={['#ff842e', '#fa5320']} style={{ flex: 1 }} />
+          ),
+          headerTintColor: '#fff',
+          headerBackTitleVisible: false
+        }}
+      />
+      <Stack.Screen
+        name="Visitors"
+        component={MyVisitorsScreen}
+        options={{
+          headerBackground: () => (
+            <LinearGradient start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} colors={['#ff842e', '#fa5320']} style={{ flex: 1 }} />
+          ),
+          headerTintColor: '#fff',
+          headerBackTitleVisible: false
+        }}
+      />
+    </Stack.Navigator>
   );
-};
+}
 
-const App: () => Node = () => {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
-
+export default function App() {
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.js</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+    <Provider>
+      <NavigationContainer ref={navigationRef}>
+        <MainStack />
+      </NavigationContainer>
+    </Provider>
   );
-};
-
-const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-});
-
-export default App;
+}

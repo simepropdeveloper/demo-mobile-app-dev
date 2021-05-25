@@ -1,0 +1,501 @@
+{
+  "properties": [
+    {
+      "id": 1,
+      "default": true,
+      "approved": true,
+      "imageFileName": "https://i.ibb.co/sRpqPZ7/1.jpg",
+      "address": "Lars Homestead 2",
+      "familyMembers": [
+        {
+          "id": 1,
+          "name": "Oola",
+          "approvalStatus": "approved"
+        },
+        {
+          "id": 2,
+          "name": "Jango Fett",
+          "approvalStatus": "approved"
+        },
+        {
+          "id": 3,
+          "name": "Padme Amidala",
+          "approvalStatus": "approved"
+        },
+        {
+          "id": 4,
+          "name": "Q'ira",
+          "approvalStatus": "pending"
+        }
+      ],
+      "latestBills": [
+        {
+          "id": 1,
+          "fileName": "Inv-1001",
+          "description": "Maintenance Fee",
+          "time": "17:35",
+          "date": "2021/07/01",
+          "value": "RM 700",
+          "status": "Pending"
+        },
+        {
+          "id": 2,
+          "fileName": "Inv-1002",
+          "description": "Maintenance Fee",
+          "time": "10:07",
+          "date": "2021/06/01",
+          "value": "RM 1000",
+          "status": "Paid"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "default": false,
+      "approved": true,
+      "imageFileName": "https://i.ibb.co/Y7tvvMC/2.jpg",
+      "address": "Lars Homestead 10",
+      "familyMembers": [
+        {
+          "id": 1,
+          "name": "Oola",
+          "approvalStatus": "approved"
+        },
+        {
+          "id": 2,
+          "name": "Jango Fett",
+          "approvalStatus": "approved"
+        },
+        {
+          "id": 3,
+          "name": "Padme Amidala",
+          "approvalStatus": "approved"
+        },
+        {
+          "id": 4,
+          "name": "Q'ira",
+          "approvalStatus": "pending"
+        }
+      ],
+      "latestBills": [
+        {
+          "id": 1,
+          "fileName": "Inv-1001",
+          "description": "Maintenance Fee",
+          "time": "17:35",
+          "date": "2021/07/01",
+          "value": "RM 1000",
+          "status": "Pending"
+        },
+        {
+          "id": 2,
+          "fileName": "Inv-1002",
+          "description": "Maintenance Fee",
+          "time": "10:07",
+          "date": "2021/06/01",
+          "value": "RM 500",
+          "status": "Pending"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "default": false,
+      "approved": true,
+      "imageFileName": "https://i.ibb.co/S3zL3rm/3.jpg",
+      "address": "Lars Homestead 8",
+      "familyMembers": [
+        {
+          "id": 1,
+          "name": "Oola",
+          "approvalStatus": "approved"
+        },
+        {
+          "id": 2,
+          "name": "Jango Fett",
+          "approvalStatus": "approved"
+        },
+        {
+          "id": 3,
+          "name": "Padme Amidala",
+          "approvalStatus": "approved"
+        },
+        {
+          "id": 4,
+          "name": "Q'ira",
+          "approvalStatus": "pending"
+        }
+      ],
+      "latestBills": [
+        {
+          "id": 1,
+          "fileName": "Inv-1001",
+          "description": "Maintenance Fee",
+          "time": "17:35",
+          "date": "2021/07/01",
+          "value": "RM 300",
+          "status": "Paid"
+        },
+        {
+          "id": 2,
+          "fileName": "Inv-1002",
+          "description": "Maintenance Fee",
+          "time": "10:07",
+          "date": "2021/06/01",
+          "value": "RM 800",
+          "status": "Paid"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "default": false,
+      "approved": true,
+      "imageFileName": "https://i.ibb.co/k853rhK/4.jpg",
+      "address": "Lars Homestead 32",
+      "familyMembers": [
+        {
+          "id": 1,
+          "name": "Oola",
+          "approvalStatus": "approved"
+        },
+        {
+          "id": 2,
+          "name": "Jango Fett",
+          "approvalStatus": "approved"
+        },
+        {
+          "id": 3,
+          "name": "Padme Amidala",
+          "approvalStatus": "approved"
+        },
+        {
+          "id": 4,
+          "name": "Q'ira",
+          "approvalStatus": "pending"
+        }
+      ],
+      "latestBills": [
+        {
+          "id": 1,
+          "fileName": "Inv-1001",
+          "description": "Maintenance Fee",
+          "time": "17:35",
+          "date": "2021/07/01",
+          "value": "RM 900",
+          "status": "Pending"
+        },
+        {
+          "id": 2,
+          "fileName": "Inv-1002",
+          "description": "Maintenance Fee",
+          "time": "10:07",
+          "date": "2021/06/01",
+          "value": "RM 1100",
+          "status": "Paid"
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "default": false,
+      "approved": true,
+      "imageFileName": "https://i.ibb.co/nsFBKTm/5.jpg",
+      "address": "Lars Homestead 7",
+      "familyMembers": [
+        {
+          "id": 1,
+          "name": "Oola",
+          "approvalStatus": "approved"
+        },
+        {
+          "id": 2,
+          "name": "Jango Fett",
+          "approvalStatus": "approved"
+        },
+        {
+          "id": 3,
+          "name": "Padme Amidala",
+          "approvalStatus": "approved"
+        },
+        {
+          "id": 4,
+          "name": "Q'ira",
+          "approvalStatus": "pending"
+        }
+      ],
+      "latestBills": [
+        {
+          "id": 1,
+          "fileName": "Inv-1001",
+          "description": "Maintenance Fee",
+          "time": "17:35",
+          "date": "2021/07/01",
+          "value": "RM 500",
+          "status": "Pending"
+        },
+        {
+          "id": 2,
+          "fileName": "Inv-1002",
+          "description": "Maintenance Fee",
+          "time": "10:07",
+          "date": "2021/06/01",
+          "value": "RM 700",
+          "status": "Pending"
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "default": false,
+      "approved": true,
+      "imageFileName": "https://i.ibb.co/z5G9H0G/6.jpg",
+      "address": "Lars Homestead 9",
+      "familyMembers": [
+        {
+          "id": 1,
+          "name": "Oola",
+          "approvalStatus": "approved"
+        },
+        {
+          "id": 2,
+          "name": "Jango Fett",
+          "approvalStatus": "approved"
+        },
+        {
+          "id": 3,
+          "name": "Padme Amidala",
+          "approvalStatus": "approved"
+        },
+        {
+          "id": 4,
+          "name": "Q'ira",
+          "approvalStatus": "pending"
+        }
+      ],
+      "latestBills": [
+        {
+          "id": 1,
+          "fileName": "Inv-1001",
+          "description": "Maintenance Fee",
+          "time": "17:35",
+          "date": "2021/07/01",
+          "value": "RM 600",
+          "status": "Pending"
+        },
+        {
+          "id": 2,
+          "fileName": "Inv-1002",
+          "description": "Maintenance Fee",
+          "time": "10:07",
+          "date": "2021/06/01",
+          "value": "RM 400",
+          "status": "Pending"
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "default": false,
+      "approved": true,
+      "imageFileName": "https://i.ibb.co/Cn8G90m/7.jpg",
+      "address": "Lars Homestead 11",
+      "familyMembers": [
+        {
+          "id": 1,
+          "name": "Oola",
+          "approvalStatus": "approved"
+        },
+        {
+          "id": 2,
+          "name": "Jango Fett",
+          "approvalStatus": "approved"
+        },
+        {
+          "id": 3,
+          "name": "Padme Amidala",
+          "approvalStatus": "approved"
+        },
+        {
+          "id": 4,
+          "name": "Q'ira",
+          "approvalStatus": "pending"
+        }
+      ],
+      "latestBills": [
+        {
+          "id": 1,
+          "fileName": "Inv-1001",
+          "description": "Maintenance Fee",
+          "time": "17:35",
+          "date": "2021/07/01",
+          "value": "RM 1000",
+          "status": "Paid"
+        },
+        {
+          "id": 2,
+          "fileName": "Inv-1002",
+          "description": "Maintenance Fee",
+          "time": "10:07",
+          "date": "2021/06/01",
+          "value": "RM 700",
+          "status": "Paid"
+        }
+      ]
+    }
+  ],
+  "announcements": [
+    {
+      "id": 1,
+      "imageFileName": "https://i.ibb.co/b30bKc3/1.jpg",
+      "title": "Happy Chinese New Year"
+    },
+    {
+      "id": 2,
+      "imageFileName": "https://i.ibb.co/x1L5MKX/2.jpg",
+      "title": "Siap Sedia Raya"
+    },
+    {
+      "id": 3,
+      "imageFileName": "https://i.ibb.co/f4bmZ3T/3.jpg",
+      "title": "Launching Elmina Green"
+    },
+    {
+      "id": 4,
+      "imageFileName": "https://i.ibb.co/9GPqNdr/4.jpg",
+      "title": "Spotlight Grand Finale"
+    }
+  ],
+  "visitors": [
+    {
+      "id": 1,
+      "house": "Lars Homestead 2",
+      "name": "Count Dooku",
+      "plateNo": "DU4791",
+      "mobileNo": "0129679500",
+      "entryType": "Single Entry",
+      "entryDate": "Mon May 27 2021 19:37:33 GMT+0800 (Malaysia Time)",
+      "approvalUponArrival": true
+    },
+    {
+      "id": 2,
+      "house": "Lars Homestead 4",
+      "name": "Admiral Motti",
+      "plateNo": "DU4971",
+      "mobileNo": "0199679567",
+      "entryType": "Multiple Entry",
+      "entryDate": "Mon May 29 2021 19:37:33 GMT+0800 (Malaysia Time)",
+      "approvalUponArrival": false
+    },
+    {
+      "id": 3,
+      "house": "Lars Homestead 9",
+      "name": "Mon Mothma",
+      "plateNo": "DU4917",
+      "mobileNo": "0199679500",
+      "entryType": "Single Entry",
+      "entryDate": "Mon May 30 2021 19:37:33 GMT+0800 (Malaysia Time)",
+      "approvalUponArrival": true
+    },
+    {
+      "id": 4,
+      "house": "Lars Homestead 2",
+      "name": "Nien Nunb",
+      "plateNo": "DU1497",
+      "mobileNo": "0199453500",
+      "entryType": "Multiple Entry",
+      "entryDate": "Mon June 10 2021 19:37:33 GMT+0800 (Malaysia Time)",
+      "approvalUponArrival": true
+    },
+    {
+      "id": 5,
+      "house": "Lars Homestead 4",
+      "name": "Max Rebo",
+      "plateNo": "DU7914",
+      "mobileNo": "0129679233",
+      "entryType": "Multiple Entry",
+      "entryDate": "Mon June 14 2021 19:37:33 GMT+0800 (Malaysia Time)",
+      "approvalUponArrival": true
+    },
+    {
+      "id": 6,
+      "house": "Lars Homestead 9",
+      "name": "Salacious B. Crumb",
+      "plateNo": "DU7491",
+      "mobileNo": "0129884322",
+      "entryType": "Single Entry",
+      "entryDate": "Mon June 19 2021 19:37:33 GMT+0800 (Malaysia Time)",
+      "approvalUponArrival": false
+    },
+    {
+      "id": 7,
+      "house": "Lars Homestead 2",
+      "name": "Enfys Nest",
+      "plateNo": "DU9174",
+      "mobileNo": "0129435199",
+      "entryType": "Single Entry",
+      "entryDate": "Mon June 22 2021 19:37:33 GMT+0800 (Malaysia Time)",
+      "approvalUponArrival": false
+    },
+    {
+      "id": 8,
+      "house": "Lars Homestead 4",
+      "name": "Figrin D’an",
+      "plateNo": "DU1794",
+      "mobileNo": "0123451002",
+      "entryType": "Single Entry",
+      "entryDate": "Mon June 27 2021 19:37:33 GMT+0800 (Malaysia Time)",
+      "approvalUponArrival": false
+    },
+    {
+      "id": 9,
+      "house": "Lars Homestead 9",
+      "name": "Wicket W. Warrick",
+      "plateNo": "DU1974",
+      "mobileNo": "0127765441",
+      "entryType": "Multiple Entry",
+      "entryDate": "Mon June 28 2021 19:37:33 GMT+0800 (Malaysia Time)",
+      "approvalUponArrival": true
+    },
+    {
+      "house": "Lars Homestead 4",
+      "name": "Hoth Rebel",
+      "plateNo": "RX 5678",
+      "mobileNo": "012345678",
+      "entryType": "Multiple Entry",
+      "entryDate": "2021-08-26T16:00:00.000Z",
+      "approvalUponArrival": true,
+      "id": 12
+    },
+    {
+      "house": "Lars Homestead 4",
+      "name": "Luke Skywalker",
+      "plateNo": "AF 5643",
+      "mobileNo": "0123456789",
+      "entryType": "Single Entry",
+      "entryDate": "2021-05-23T16:00:00.000Z",
+      "approvalUponArrival": true,
+      "id": 13
+    },
+    {
+      "house": "Lars Homestead 4",
+      "name": "Musaffar",
+      "plateNo": "BAK 3456",
+      "mobileNo": "012345678",
+      "entryType": "Multiple Entry",
+      "entryDate": "2021-08-29T16:00:00.000Z",
+      "approvalUponArrival": false,
+      "id": 14
+    },
+    {
+      "house": "Lars Homestead 2",
+      "name": "Darth Sidius",
+      "plateNo": "X 1",
+      "mobileNo": "0129569588",
+      "entryType": "Multiple Entry",
+      "entryDate": "2029-08-23T16:00:00.000Z",
+      "approvalUponArrival": true,
+      "id": 15
+    }
+  ]
+}
