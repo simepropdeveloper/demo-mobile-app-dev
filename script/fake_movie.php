@@ -1,36 +1,3 @@
-# Installation
-
-### STEP 1: Migrate MySQL
-
-```bash
-Update .env FIRST!
-```
-
-```bash
-composer install
-```
-
-```bash
-php artisan migrate
-```
-
-### STEP 2: Insert Account Fake Data
-
-```bash
-<?php
-for($i = 0; $i <= 20; $i++){
-    Account::create([
-        'name' => fake()->name(),
-        'email' => preg_replace('/@example\..*/', '@gmail.com', fake()->unique()->safeEmail),
-        'password' => 'admin1234',
-    ]);
-}
-?>
-```
-    
-### STEP 3: Insert Movie Fake Data
-
-```bash
 <?php
 for($i = 0; $i <= 20; $i++){
     $moviefaker = \Faker\Factory::create();
@@ -72,10 +39,3 @@ for($i = 0; $i <= 20; $i++){
     ]);
 }
 ?>
-```
-
-### STEP 5: Final
-```bash
-npm install
-npm run dev
-```
