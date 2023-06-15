@@ -4,11 +4,11 @@
 
         <div class="grid">
             <div
-                v-for="index in 2"
+                v-for="index in 4"
                 :key="index"
-                class="cursor-pointer col-12 md:col-6 lg:col-6 flex align-items-start justify-content-start flex-column gap-2">
+                class="cursor-pointer col-6 md:col-6 lg:col-3 flex align-items-start justify-content-start flex-column gap-2">
 
-                <Skeleton class="w-6 h-15rem w-15rem border-round-md surface-700"></Skeleton>
+                <Skeleton class="h-8rem w-full border-round-md surface-700"></Skeleton>
                 <Skeleton class="w-9 h-1rem border-round-xl surface-700"></Skeleton>
             </div>
         </div>

@@ -8,32 +8,19 @@
 export default {
     name: 'CinemaApp',
     data: () => ({
-        appWidth: 10,
+
     }),
     methods: {
         screenHandler: function(){
             const $screenHeight = (window.innerHeight * 0.01);
-            const $screenWidth = (window.innerWidth * 0.4);
 
             document.documentElement.style.setProperty('--vh', `${ $screenHeight }px`);
-
-            this.appWidth = $screenWidth;
         }
     },
     computed: {
         containerStyle: function(){
-            let applicationWidth = (this.appWidth);
-
-            if(applicationWidth < 320){
-                applicationWidth = 320;
-            }
-
-            if(applicationWidth > 520){
-                applicationWidth = 520;
-            }
-
             return [{
-                width: `${ applicationWidth }px`
+                width: `clamp(380px, 50vw, 620px)`
             }];
         },
         icon: function(){
