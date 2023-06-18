@@ -7,10 +7,13 @@
 
         <link rel="icon" href="#">
         <link rel="stylesheet" href="{{ URL::asset('prime-asset.css') }}">
+
+        <script>
+            var appURL = `{{ env('APP_URL') }}`;
+        </script>
     </head>
 
     <body class="flex align-items-center justify-content-center surface-0">
-
         <div id="app" class="surface-0 apps-wrapper shadow-6"></div>
 
         <script type="application/javascript" src="{{ URL::asset('app.js') }}?12"></script>

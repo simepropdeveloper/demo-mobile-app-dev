@@ -73,7 +73,9 @@
                 });
 
                 //# Get Last Record
-                this.resourcesIntersect.observe(this.$refs.lastObserver);
+                if(this.resourcesIntersect && this.$refs.lastObserver){
+                    this.resourcesIntersect.observe(this.$refs.lastObserver);
+                }
             },
             groupArrayByKey: function(dataset, key){
                 return dataset.reduce((acc, item) => ((acc[item[key] ?? 'nogroup'] = [...(acc[item[key] ?? 'nogroup'] || []), item]), acc), {});

@@ -2,13 +2,15 @@
     <div :class="containerClass">
         <div class="video-player surface-400 border-round-top p-2">
             <div class="h-full w-full flex flex-column z-1">
-                <div class="flex justify-content-between p-3">
-                    <span v-html="icon.gobackarrow"></span>
-                    <span v-html="icon.zoom"></span>
+                <div class="flex justify-content-between">
+                    <span @click="backScreen" class="h-3rem w-3rem border-circle flex align-items-center justify-content-center cursor-pointer hover:surface-800 transition-background transition-duration-200" v-html="icon.gobackarrow"></span>
+                    <span class="h-3rem w-3rem border-circle flex align-items-center justify-content-center cursor-pointer hover:surface-800 transition-background transition-duration-200" v-html="icon.zoom"></span>
                 </div>
+
                 <div class="flex-1 flex align-items-center justify-content-center">
                     <span v-html="icon.play"></span>
                 </div>
+
                 <div class="flex justify-content-between p-3">
                     <span class="border-1 border-0 py-1 px-2 uppercase text-sm text-0 font-bold">Trailer</span>
                     <span v-html="icon.mute"></span>
@@ -29,7 +31,7 @@
             </div>
 
             <!-- Info Details -->
-            <div class="py-6 px-4">
+            <div class="pt-6 pb-3 px-4">
                 <div class="flex flex-column gap-3">
                     <div class="grid">
                         <div class="col-12 md:col-6 lg:col-5">
@@ -97,9 +99,8 @@
                         <TabPanel header="Rating & Reviews">No Content Yet</TabPanel>
                     </TabView>
 
-                    <div class="flex sticky bot-0 gap-3">
-                        <Button @click="backScreen" label="Cancel" class="surface-900 flex-1 border-1 border-600 py-3"></Button>
-                        <Button label="Book Ticket" class="surface-600 flex-1 border-1 border-600 py-3"></Button>
+                    <div class="flex">
+                        <Button @click="bookTicket" label="Book Ticket" class="surface-600 flex-1 border-1 border-600 py-3"></Button>
                     </div>
                 </div>
             </div>
@@ -123,6 +124,9 @@ export default {
     methods: {
         backScreen: function(){
             this.$store.state.appPage = 'PageHome';
+        },
+        bookTicket: function(){
+            this.$store.state.appPage = 'PageTicketSelection';
         }
     },
     computed: {
@@ -137,7 +141,7 @@ export default {
         }
     },
     mounted: function(){
-
+        this.movieScore = (Math.floor(Math.random() * 4));
     }
 }
 </script>

@@ -1,6 +1,6 @@
 <template>
     <div :class="containerClass">
-        <HeaderText class="pb-3 pt-2"></HeaderText>
+        <ProfileHeader class="pb-3 pt-2"></ProfileHeader>
 
         <SearchBar
             @on-search="doSearch"

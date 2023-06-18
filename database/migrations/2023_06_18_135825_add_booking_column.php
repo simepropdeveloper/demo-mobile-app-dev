@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('movie', function (Blueprint $table) {
-            $table->time('duration',0)->after('description')->nullable();
+        Schema::table('booking', function (Blueprint $table) {
+            $table->dateTime('date', $precision = 0)->default(null)->nullable();
         });
     }
 
@@ -21,8 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('movie', function (Blueprint $table) {
-            $table->dropColumn('duration');
+        Schema::table('booking', function (Blueprint $table) {
+            $table->dropColumn('date');
         });
     }
 };

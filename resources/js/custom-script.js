@@ -6,10 +6,14 @@ import axios from 'axios';
 
 const $store = createStore({
     state: () => ({
-        origin: 'http://localhost:41062/www/demo-mobile-app-dev/public',
-        appPage: 'PageHome',
-        currentMovie: null,
-        searchKey: null
+        origin       : appURL,
+        appPage      : 'PageAccount',
+        searchKey    : null,
+        currentProfile : null,
+        currentMovie : null,
+        slotArray    : [],
+        stateArray   : [],
+        locationArray: [],
     }),
     mutations: {
         
@@ -26,15 +30,30 @@ const lib = {
 
 import Icons from './icons.js';
 import CinemaApp from '../components/app.vue';
+
+//# Parent Component
 import PageHome from '../components/parent/page-home.vue';
+import PageTicketSelection from '../components/parent/page-ticket-selection.vue';
 import PageDetail from '../components/parent/page-detail.vue';
-import HeaderText from '../components/children/header-text.vue';
+import PageAccount from '../components/parent/page-account.vue';
+import PageCongrate from '../components/parent/page-congrate.vue';
+
+//# Child Component
+import ProfileHeader from '../components/children/profile-header.vue';
 import StarRating from '../components/children/star-rating.vue';
 import ToolBar from '../components/children/tools-bar.vue';
 import SearchBar from '../components/children/search-bar.vue';
 import Movies from '../components/children/movie-list.vue';
 import MovieSkeleton from '../components/children/movie-skeleton.vue';
 import MovieThumbnail from '../components/children/movie-thumbnail.vue';
+import SeatPicker from '../components/children/seat-picker.vue';
+import MonthPicker from '../components/children/month-picker.vue';
+import DayPicker from '../components/children/day-picker.vue';
+import LocationPicker from '../components/children/location-picker.vue';
+import StatePicker from '../components/children/state-picker.vue';
+import TimeSlot from '../components/children/time-slot.vue';
+import SeatDate from '../components/children/seat-date.vue';
+import ScrollerTab from '../components/children/scroller-tab.vue';
 
 //# Prime Setup
 import PrimeVue from 'primevue/config';
@@ -42,6 +61,8 @@ import ConfirmationService from 'primevue/confirmationservice';
 import ToastService from 'primevue/toastservice';
 
 //# Prime Component
+import ConfirmDialog from 'primevue/confirmdialog';
+import Dropdown from 'primevue/dropdown';
 import Divider from 'primevue/divider';
 import OverlayPanel from 'primevue/overlaypanel';
 import Skeleton from 'primevue/skeleton';
@@ -59,18 +80,33 @@ import Toast from 'primevue/toast';
 
 const app = createApp(CinemaApp, {});
 
-//# Child Component
+//# Parent Component
+app.component('PageAccount', PageAccount);
 app.component('PageHome', PageHome);
 app.component('PageDetail', PageDetail);
+app.component('PageCongrate', PageCongrate);
+app.component('PageTicketSelection', PageTicketSelection);
+
+//# Child Component
 app.component('ToolBar', ToolBar);
 app.component('StarRating', StarRating);
 app.component('SearchBar', SearchBar);
-app.component('HeaderText', HeaderText);
+app.component('ProfileHeader', ProfileHeader);
 app.component('Movies', Movies);
 app.component('MovieSkeleton', MovieSkeleton);
 app.component('MovieThumbnail', MovieThumbnail);
+app.component('SeatPicker', SeatPicker);
+app.component('MonthPicker', MonthPicker);
+app.component('LocationPicker', LocationPicker);
+app.component('StatePicker', StatePicker);
+app.component('DayPicker', DayPicker);
+app.component('TimeSlot', TimeSlot);
+app.component('SeatDate', SeatDate);
+app.component('ScrollerTab', ScrollerTab);
 
 //# Prime Component
+app.component('ConfirmDialog', ConfirmDialog);
+app.component('Dropdown', Dropdown);
 app.component('Sidebar', Sidebar);
 app.component('Button', Button);
 app.component('Panel', Panel);

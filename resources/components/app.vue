@@ -20,7 +20,7 @@ export default {
     computed: {
         containerStyle: function(){
             return [{
-                width: `clamp(380px, 50vw, 620px)`
+                width: `clamp(380px, 50vw, 520px)`
             }];
         },
         icon: function(){

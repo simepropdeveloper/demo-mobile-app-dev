@@ -24,25 +24,25 @@
                 buttons: [{
                     icon: this.$icon.home,
                     label: 'Home',
-                    callback: function(){
-                        console.log('Home');
+                    callback: () => {
+                        this.$store.state.appPage = 'PageAccount';
                     }
                 },{
                     icon: this.$icon.ticket,
                     label: 'Ticket',
-                    callback: function(){
+                    callback: () => {
                         console.log('Ticket');
                     }
                 },{ 
                     icon: this.$icon.love,
                     label: 'Favourite',
-                    callback: function(){
+                    callback: () => {
                         console.log('Favourite');
                     }
                 },{
                     icon: this.$icon.user,
                     label: 'Profile',
-                    callback: function(){
+                    callback: () => {
                         console.log('Profile');
                     }
                 }]
