@@ -1,6 +1,29 @@
-# HOWTO
+# Installation
 
-1. Document your codes as detail as possible.
-2. Clone this repository.
-3. Overide this README & provide instructions on how to compile and run your code in simulator mode within Android Studio or Xcode.
-3. Commit your codes & create a pull request.
+### STEP 1: Database Setup
+
+```bash
+Create database named "SimeDarby"
+```
+
+```bash
+Update .env
+```
+
+```bash
+composer install
+```
+
+```bash
+php artisan migrate
+```    
+### STEP 2: Run Fake Data Script
+```bash
+http://localhost:41062/www/demo-mobile-app-dev/public/runscript
+```
+
+### STEP 3: Final
+```bash
+npm install
+npm run dev
+```
