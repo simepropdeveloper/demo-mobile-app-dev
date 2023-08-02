@@ -9,7 +9,7 @@ const CategoryText = (props: any) => {
         {props.title}
       </Text>
       <Text style={[styles.text, {fontSize: 12, color: COLOR.WhiteRGBA50}]}>
-        View All
+        {props.subtitle}
       </Text>
     </View>
   );

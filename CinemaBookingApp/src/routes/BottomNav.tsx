@@ -1,12 +1,12 @@
 import React from 'react';
-import HomeView from '../views/HomeView';
 import TicketView from '../views/TicketView';
 import FavouriteView from '../views/FavouriteView';
-import AccountView from '../views/AccountView';
+import AccountView from '../views/account/AccountView';
 import {View, StyleSheet, Text} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {COLOR, FONTSIZE, SPACING} from '../themes/themes';
+import {COLOR} from '../themes/themes';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import MovieStack from './MovieStack';
 // import IconMaterial from 'react-native-vector-icons/MaterialIcons';
 
 const Tab = createBottomTabNavigator();
@@ -16,7 +16,7 @@ const IconTab = (focused: boolean, name: string) => {
       <Icon
         name={name}
         color={focused ? COLOR.White : COLOR.WhiteRGBA32}
-        size={FONTSIZE.size_30}
+        size={30}
       />
     </View>
   );
@@ -34,12 +34,12 @@ const BottomNav = () => {
         tabBarStyle: {
           backgroundColor: COLOR.Black,
           borderTopWidth: 0,
-          height: SPACING.space_10 * 6,
+          height: 56,
         },
       }}>
       <Tab.Screen
         name="Home"
-        component={HomeView}
+        component={MovieStack}
         options={{
           tabBarLabel(props) {
             return LabelTab(props.focused, 'Home');
@@ -50,6 +50,7 @@ const BottomNav = () => {
           tabBarIcon: ({focused}) => {
             return IconTab(focused, 'home');
           },
+          headerShown: false,
         }}
       />
       <Tab.Screen
@@ -104,12 +105,12 @@ const BottomNav = () => {
 const style = StyleSheet.create({
   none: {
     display: 'none',
-    fontSize: FONTSIZE.size_10,
+    fontSize: 10,
     color: COLOR.WhiteRGBA75,
   },
   show: {
     display: 'flex',
-    fontSize: FONTSIZE.size_10,
+    fontSize: 10,
     color: COLOR.White,
   },
 });

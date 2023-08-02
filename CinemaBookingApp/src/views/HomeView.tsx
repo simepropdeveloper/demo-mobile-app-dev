@@ -5,7 +5,6 @@ import {
   ScrollView,
   StatusBar,
   ActivityIndicator,
-  Dimensions,
   FlatList,
 } from 'react-native';
 import {COLOR} from '../themes/themes';
@@ -20,12 +19,13 @@ import {
   getUpComingMovies,
 } from '../api/ApiHandler';
 
-const {width} = Dimensions.get('window');
+// const {width} = Dimensions.get('window');
 
 const HomeView = ({navigation}: any) => {
   const [newMovieList, setNewMovieList] = React.useState([]);
-  const [popularMovieList, setPopularMovieList] = React.useState([]);
-  const [recommendedMovieList, setRecommendedMovieList] = React.useState([]);
+  const [popularMovieList, setPopularMovieList] = React.useState<any>(null);
+  const [recommendedMovieList, setRecommendedMovieList] =
+    React.useState<any>(null);
 
   React.useEffect(() => {
     (async () => {
@@ -41,11 +41,8 @@ const HomeView = ({navigation}: any) => {
   }, []);
 
   if (
-    recommendedMovieList.length === 0 &&
-    recommendedMovieList == null &&
-    popularMovieList.length === 0 &&
-    popularMovieList == null &&
-    newMovieList.length === 0 &&
+    recommendedMovieList == null ||
+    popularMovieList == null ||
     newMovieList == null
   ) {
     return (
@@ -69,7 +66,7 @@ const HomeView = ({navigation}: any) => {
     <ScrollView style={styles.container} bounces={false}>
       <HeaderUser />
       <SearchBar />
-      <CategoryText title={'New Releases'} />
+      <CategoryText title={'New Releases'} subtitle={'View All'} />
       <FlatList
         data={newMovieList}
         keyExtractor={(item: any) => item.id}
@@ -79,11 +76,9 @@ const HomeView = ({navigation}: any) => {
         contentContainerStyle={styles.containerGap36}
         renderItem={({item, index}) => (
           <MovieCard
-            shoudlMarginatedAtEnd={true}
             cardFunction={() => {
               navigation.push('DetailMovie', {movieid: item.id});
             }}
-            cardWidth={width / 3}
             isFirst={index === 0 ? true : false}
             isLast={index === newMovieList?.length - 1 ? true : false}
             title={item.original_title}
@@ -91,7 +86,7 @@ const HomeView = ({navigation}: any) => {
           />
         )}
       />
-      <CategoryText title={'Popular in cinemas'} />
+      <CategoryText title={'Popular in cinemas'} subtitle={'View All'} />
       <FlatList
         data={popularMovieList}
         keyExtractor={(item: any) => item.id}
@@ -101,11 +96,9 @@ const HomeView = ({navigation}: any) => {
         contentContainerStyle={styles.containerGap36}
         renderItem={({item, index}) => (
           <MovieCard
-            shoudlMarginatedAtEnd={true}
             cardFunction={() => {
               navigation.push('DetailMovie', {movieid: item.id});
             }}
-            cardWidth={width / 3}
             isFirst={index === 0 ? true : false}
             isLast={index === popularMovieList?.length - 1 ? true : false}
             title={item.original_title}
@@ -113,7 +106,7 @@ const HomeView = ({navigation}: any) => {
           />
         )}
       />
-      <CategoryText title={'Recommended for you'} />
+      <CategoryText title={'Recommended for you'} subtitle={'View All'} />
       <FlatList
         data={recommendedMovieList}
         keyExtractor={(item: any) => item.id}
@@ -123,11 +116,9 @@ const HomeView = ({navigation}: any) => {
         contentContainerStyle={styles.containerGap36}
         renderItem={({item, index}) => (
           <MovieCard
-            shoudlMarginatedAtEnd={true}
             cardFunction={() => {
               navigation.push('DetailMovie', {movieid: item.id});
             }}
-            cardWidth={width / 3}
             isFirst={index === 0 ? true : false}
             isLast={index === recommendedMovieList?.length - 1 ? true : false}
             title={item.original_title}

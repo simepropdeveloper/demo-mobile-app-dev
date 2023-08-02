@@ -1,16 +1,30 @@
 import * as React from 'react';
-import {Text, View, StyleSheet} from 'react-native';
-
+import {Text, View, StyleSheet, ScrollView, Dimensions} from 'react-native';
+import {COLOR, FONTFAMILY} from '../themes/themes';
+const {width, height} = Dimensions.get('window');
 const FavouriteView = () => {
   return (
-    <View style={styles.container}>
-      <Text>componentName</Text>
-    </View>
+    <ScrollView>
+      <View style={styles.container}>
+        <Text style={styles.text}>No Favourite Movies</Text>
+      </View>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {},
+  container: {
+    width: width,
+    height: height,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: COLOR.Black,
+  },
+  text: {
+    color: COLOR.White,
+    fontFamily: FONTFAMILY.poppins_bold,
+    fontSize: 16,
+  },
 });
 
 export default FavouriteView;

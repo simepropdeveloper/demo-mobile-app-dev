@@ -3,7 +3,6 @@ import {Text, View, StyleSheet} from 'react-native';
 import {COLOR, FONTFAMILY} from '../themes/themes';
 
 const Genre = (props: any) => {
-  console.log(props);
   return (
     <View style={styles.container} key={props.id}>
       <Text style={styles.text}>{props.genre}</Text>

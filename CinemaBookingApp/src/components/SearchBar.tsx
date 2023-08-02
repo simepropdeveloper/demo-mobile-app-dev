@@ -16,7 +16,7 @@ const SearchBar = () => {
         onChangeText={textInput => setSearchText(textInput)}
         value={searchText}
         placeholder="Search your Movies..."
-        placeholderTextColor={COLOR.WhiteRGBA32}
+        placeholderTextColor={COLOR.WhiteRGBA75}
       />
       <TouchableOpacity style={styles.searchIcon}>
         <IconSliders name="sliders" color={COLOR.White} size={20} />
