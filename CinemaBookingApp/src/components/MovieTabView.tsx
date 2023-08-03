@@ -3,8 +3,8 @@ import {useWindowDimensions} from 'react-native';
 import {Text, View} from 'react-native';
 import {TabView, TabBar} from 'react-native-tab-view';
 import {COLOR, FONTFAMILY} from '../themes/themes';
-import ListDetailsMovie from '../components/ListDetailsMovie';
-import RatingPager from '../components/RatingPager';
+import ListDetailsMovie from './ListDetailsMovie';
+import RatingPager from './pager/RatingPager';
 
 const Details = (props: any) => (
   <View style={{paddingTop: 10}}>
@@ -40,7 +40,7 @@ const renderScene = ({route}: any) => {
   }
 };
 
-const TabPager = (props: any) => {
+const MovieTabView = (props: any) => {
   const layout = useWindowDimensions();
   const [index, setIndex] = React.useState(0);
   const [routes] = React.useState([
@@ -87,7 +87,7 @@ const TabPager = (props: any) => {
   );
 };
 
-export default TabPager;
+export default MovieTabView;
 
 // const styles = StyleSheet.create({
 //   container: {

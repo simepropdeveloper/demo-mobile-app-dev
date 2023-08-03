@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import {COLOR, FONTFAMILY} from '../themes/themes';
+import {COLOR, FONTFAMILY} from '../../themes/themes';
 const {width, height} = Dimensions.get('window');
 const OrderCompletedView = ({navigation}: any) => {
   return (

@@ -14,12 +14,13 @@ import {
   getMovieCasts,
   getMovieDetails,
   getMovieReviews,
-} from '../api/ApiHandler';
-import {COLOR, FONTFAMILY} from '../themes/themes';
+} from '../../api/ApiHandler';
+import {COLOR, FONTFAMILY} from '../../themes/themes';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import Genre from '../components/Genre';
-import TabPager from '../routes/TabPager';
-import Star from '../components/Star';
+import Genre from '../../components/Genre';
+
+import Star from '../../components/Star';
+import MovieTabView from '../../components/MovieTabView';
 
 const DetailMovieView = ({navigation, route}: any) => {
   // const [urlTrailer, setUrlTrailer] = React.useState('');
@@ -130,14 +131,14 @@ const DetailMovieView = ({navigation, route}: any) => {
             </View>
           </View>
         </View>
-        <TabPager
+        <MovieTabView
           movie={movieDetails}
           casts={movieCasts}
           reviews={movieReviews}
         />
         <TouchableOpacity
           style={styles.button}
-          onPress={() => navigation.push('Payment')}>
+          onPress={() => navigation.push('BeverageFood')}>
           <Text style={[styles.textTitle, {textAlign: 'center'}]}>
             Book Ticket
           </Text>

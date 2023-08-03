@@ -1,12 +1,12 @@
 import React from 'react';
-import TicketView from '../views/TicketView';
-import FavouriteView from '../views/FavouriteView';
+import TicketView from '../views/history/HistoryTicketView';
 import AccountView from '../views/account/AccountView';
 import {View, StyleSheet, Text} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {COLOR} from '../themes/themes';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import MovieStack from './MovieStack';
+import FavoriteView from '../views/favorite/FavoriteView';
+import MovieView from '../views/movie/MovieView';
 // import IconMaterial from 'react-native-vector-icons/MaterialIcons';
 
 const Tab = createBottomTabNavigator();
@@ -39,7 +39,7 @@ const BottomNav = () => {
       }}>
       <Tab.Screen
         name="Home"
-        component={MovieStack}
+        component={MovieView}
         options={{
           tabBarLabel(props) {
             return LabelTab(props.focused, 'Home');
@@ -50,7 +50,6 @@ const BottomNav = () => {
           tabBarIcon: ({focused}) => {
             return IconTab(focused, 'home');
           },
-          headerShown: false,
         }}
       />
       <Tab.Screen
@@ -69,11 +68,11 @@ const BottomNav = () => {
         }}
       />
       <Tab.Screen
-        name="Favourite"
-        component={FavouriteView}
+        name="Favorite"
+        component={FavoriteView}
         options={{
           tabBarLabel(props) {
-            return LabelTab(props.focused, 'Favourite');
+            return LabelTab(props.focused, 'Favorite');
           },
           tabBarLabelStyle: {
             color: COLOR.White,

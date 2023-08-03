@@ -1,9 +1,9 @@
 import * as React from 'react';
 import {Text, View, StyleSheet, FlatList} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import CategoryText from '../components/CategoryText';
-import ReviewCard from '../components/ReviewCard';
-import {COLOR, FONTFAMILY} from '../themes/themes';
+import CategoryText from '../CategoryText';
+import ReviewCard from '../card/ReviewCard';
+import {COLOR, FONTFAMILY} from '../../themes/themes';
 type Rating = {
   '5star': number;
   '4star': number;
@@ -68,7 +68,7 @@ const RatingPager = (props: any) => {
               {[...Array(idx)].map(idx1 => (
                 <Icon
                   key={`idx-${Math.floor(Math.random() * 1000 + 1)}-${
-                    idx1 * 5
+                    idx1 + 1 * 5
                   }`}
                   name="star"
                   style={{paddingVertical: 2}}

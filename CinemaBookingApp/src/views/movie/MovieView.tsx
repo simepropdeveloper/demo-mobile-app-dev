@@ -7,21 +7,21 @@ import {
   ActivityIndicator,
   FlatList,
 } from 'react-native';
-import {COLOR} from '../themes/themes';
-import HeaderUser from '../components/HeaderUser';
-import SearchBar from '../components/SearchBar';
-import CategoryText from '../components/CategoryText';
-import MovieCard from '../components/MovieCard';
+import {COLOR} from '../../themes/themes';
+import HeaderUser from '../../components/HeaderUser';
+import SearchBar from '../../components/SearchBar';
+import CategoryText from '../../components/CategoryText';
+import MovieCard from '../../components/card/MovieCard';
 import {
   baseImagePath,
   getPopularMovies,
   getTopRatedMovies,
   getUpComingMovies,
-} from '../api/ApiHandler';
+} from '../../api/ApiHandler';
 
 // const {width} = Dimensions.get('window');
 
-const HomeView = ({navigation}: any) => {
+const MovieView = ({navigation}: any) => {
   const [newMovieList, setNewMovieList] = React.useState([]);
   const [popularMovieList, setPopularMovieList] = React.useState<any>(null);
   const [recommendedMovieList, setRecommendedMovieList] =
@@ -77,7 +77,7 @@ const HomeView = ({navigation}: any) => {
         renderItem={({item, index}) => (
           <MovieCard
             cardFunction={() => {
-              navigation.push('DetailMovie', {movieid: item.id});
+              navigation.push('Booking', {movieid: item.id});
             }}
             isFirst={index === 0 ? true : false}
             isLast={index === newMovieList?.length - 1 ? true : false}
@@ -97,7 +97,7 @@ const HomeView = ({navigation}: any) => {
         renderItem={({item, index}) => (
           <MovieCard
             cardFunction={() => {
-              navigation.push('DetailMovie', {movieid: item.id});
+              navigation.push('Booking', {movieid: item.id});
             }}
             isFirst={index === 0 ? true : false}
             isLast={index === popularMovieList?.length - 1 ? true : false}
@@ -117,7 +117,7 @@ const HomeView = ({navigation}: any) => {
         renderItem={({item, index}) => (
           <MovieCard
             cardFunction={() => {
-              navigation.push('DetailMovie', {movieid: item.id});
+              navigation.push('Booking', {movieid: item.id});
             }}
             isFirst={index === 0 ? true : false}
             isLast={index === recommendedMovieList?.length - 1 ? true : false}
@@ -148,4 +148,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default HomeView;
+export default MovieView;

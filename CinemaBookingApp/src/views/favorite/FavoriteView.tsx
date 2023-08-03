@@ -1,12 +1,12 @@
 import * as React from 'react';
 import {Text, View, StyleSheet, ScrollView, Dimensions} from 'react-native';
-import {COLOR, FONTFAMILY} from '../themes/themes';
+import {COLOR, FONTFAMILY} from '../../themes/themes';
 const {width, height} = Dimensions.get('window');
-const TicketView = () => {
+const FavoriteView = () => {
   return (
     <ScrollView>
       <View style={styles.container}>
-        <Text style={styles.text}>No Tickets Found</Text>
+        <Text style={styles.text}>No Favourite Movies</Text>
       </View>
     </ScrollView>
   );
@@ -27,4 +27,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default TicketView;
+export default FavoriteView;

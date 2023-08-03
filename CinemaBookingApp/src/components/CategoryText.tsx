@@ -1,14 +1,12 @@
 import * as React from 'react';
-import {Text, View, StyleSheet} from 'react-native';
-import {COLOR, FONTFAMILY} from '../themes/themes';
-
+import {Text, View} from 'react-native';
 const CategoryText = (props: any) => {
   return (
-    <View style={styles.container}>
-      <Text style={[styles.text, {fontSize: 18, color: COLOR.White}]}>
+    <View className="flex justify-between  flex-row items-center px-5 pt-5 py-2">
+      <Text className="text-lg text-white w-fit  font-poppins_semibold">
         {props.title}
       </Text>
-      <Text style={[styles.text, {fontSize: 12, color: COLOR.WhiteRGBA50}]}>
+      <Text className="text-xs text-whiteRGBA50 font-poppins_semibold">
         {props.subtitle}
       </Text>
     </View>
@@ -17,16 +15,15 @@ const CategoryText = (props: any) => {
 
 export default CategoryText;
 
-const styles = StyleSheet.create({
-  container: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  text: {
-    fontFamily: FONTFAMILY.poppins_semibold,
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-  },
-});
+// const styles = StyleSheet.create({
+//   container: {
+//     display: 'flex',
+//     justifyContent: 'space-between',
+//     flexDirection: 'row',
+//     alignItems: 'center',
+//   },
+//   text: {
+//     // fontFamily: FONTFAMILY.poppins_semibold,
+//     // color: COLOR.White,
+//   },
+// });

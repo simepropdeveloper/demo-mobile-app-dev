@@ -1,24 +1,21 @@
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import * as React from 'react';
-import HomeView from '../views/HomeView';
-import DetailMovieView from '../views/DetailMovieView';
-import TicketBookingView from '../views/TicketBookingView';
+import DetailMovieView from '../views/movie/DetailMovieView';
+import TicketBookingView from '../views/booking/TicketBookingView';
 import CardPaymentView from '../views/payment/CardPaymentView';
-import OrderCompletedView from '../views/OrderCompletedView';
+import OrderCompletedView from '../views/status/OrderCompletedView';
 import {COLOR} from '../themes/themes';
 import PaymentView from '../views/payment/PaymentView';
+import BookingSummaryView from '../views/booking/BookingSummaryView';
+import BeverageFoodView from '../views/booking/BeverageFoodView';
 
-const MovieStack = ({}) => {
+const BookingStack = ({route}: any) => {
   const MovieNav = createNativeStackNavigator();
   return (
     <MovieNav.Navigator screenOptions={{animation: 'none'}}>
       <MovieNav.Screen
-        name="Movies"
-        component={HomeView}
-        options={{animation: 'none', headerShown: false}}
-      />
-      <MovieNav.Screen
         name="DetailMovie"
+        initialParams={{movieid: route.params.movieid}}
         component={DetailMovieView}
         options={{
           animation: 'none',
@@ -28,6 +25,8 @@ const MovieStack = ({}) => {
         }}
       />
       <MovieNav.Screen name="TicketBooking" component={TicketBookingView} />
+      <MovieNav.Screen name="BeverageFood" component={BeverageFoodView} />
+      <MovieNav.Screen name="BookingSummary" component={BookingSummaryView} />
       <MovieNav.Screen name="Payment" component={PaymentView} />
       <MovieNav.Screen name="CardPayment" component={CardPaymentView} />
       <MovieNav.Screen
@@ -39,4 +38,4 @@ const MovieStack = ({}) => {
   );
 };
 
-export default MovieStack;
+export default BookingStack;

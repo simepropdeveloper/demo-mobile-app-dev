@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {Text, View, StyleSheet, Image, TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
-import {COLOR, FONTFAMILY} from '../themes/themes';
+import {COLOR, FONTFAMILY} from '../../themes/themes';
 const MovieCard = (props: any) => {
   return (
     <TouchableOpacity onPress={() => props.cardFunction()}>

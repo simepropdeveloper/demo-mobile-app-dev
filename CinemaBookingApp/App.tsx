@@ -1,28 +1,31 @@
 import * as React from 'react';
-// import {Text, View, StyleSheet} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import BottomNav from './src/routes/BottomNav';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import BookingStack from './src/routes/BookingStack';
+
 const App = () => {
+  const Stack = createNativeStackNavigator();
   return (
     <NavigationContainer>
-      <BottomNav />
-      {/* <Stack.Navigator>
+      <Stack.Navigator>
         <Stack.Screen
           name="BottomNav"
           component={BottomNav}
           options={{animation: 'default', headerShown: false}}
         />
         <Stack.Screen
-          name="DetailMovie"
-          component={DetailMovieView}
-          options={{
-            animation: 'none',
-            headerTitle: '',
-            headerTransparent: true,
-            headerTintColor: COLOR.White,
-          }}
+          name="Booking"
+          component={BookingStack}
+          options={{animation: 'default', headerShown: false}}
+          // options={{
+          //   animation: 'none',
+          //   headerTitle: '',
+          //   headerTransparent: true,
+          //   headerTintColor: COLOR.White,
+          // }}
         />
-        <Stack.Screen
+        {/* <Stack.Screen
           name="TicketBooking"
           component={TicketBookingView}
           options={{animation: 'none'}}
@@ -36,8 +39,8 @@ const App = () => {
           name="CardPayment"
           component={CardPaymentView}
           options={{animation: 'none'}}
-        />
-      </Stack.Navigator> */}
+        /> */}
+      </Stack.Navigator>
     </NavigationContainer>
   );
 };

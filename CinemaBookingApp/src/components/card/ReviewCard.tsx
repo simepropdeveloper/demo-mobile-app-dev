@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {Text, View, StyleSheet} from 'react-native';
-import Star from './Star';
-import {COLOR, FONTFAMILY} from '../themes/themes';
+import Star from '../Star';
+import {COLOR, FONTFAMILY} from '../../themes/themes';
 
 const ReviewCard = (props: any) => {
   return (
