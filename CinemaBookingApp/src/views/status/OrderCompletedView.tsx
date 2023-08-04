@@ -24,13 +24,22 @@ const OrderCompletedView = ({navigation}: any) => {
         <View style={styles.buttonContainer}>
           <TouchableOpacity
             style={styles.button}
-            onPress={() => navigation.reset({routes: [{name: 'Home'}]})}>
+            onPress={() => navigation.reset({routes: [{name: 'BottomNav'}]})}>
             <Icon name="arrow-left" size={20} color={COLOR.White} />
             <Text style={styles.textDesc}>Main Menu</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.button}
-            onPress={() => navigation.reset({routes: [{name: 'Ticket'}]})}>
+            onPress={
+              () => navigation.navigate({routes: [{name: 'Ticket'}]})
+              // navigation.reset({
+              //   index: 2,
+              //   actions: [
+              //     navigation.navigate({routes: [{name: 'BottomNav'}]}),
+              //     navigation.navigate({routes: [{name: 'Ticket'}]}),
+              //   ],
+              // })
+            }>
             <Icon name="ticket-alt" size={20} color={COLOR.White} />
             <Text style={styles.textDesc}>View Ticket</Text>
           </TouchableOpacity>

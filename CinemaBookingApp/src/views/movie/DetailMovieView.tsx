@@ -138,7 +138,7 @@ const DetailMovieView = ({navigation, route}: any) => {
         />
         <TouchableOpacity
           style={styles.button}
-          onPress={() => navigation.push('BeverageFood')}>
+          onPress={() => navigation.push('TicketBooking')}>
           <Text style={[styles.textTitle, {textAlign: 'center'}]}>
             Book Ticket
           </Text>
