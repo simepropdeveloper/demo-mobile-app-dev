@@ -1,7 +1,8 @@
+/* eslint-disable react-native/no-inline-styles */
+/* eslint-disable react/no-unstable-nested-components */
 import * as React from 'react';
-import {Text, View, TouchableOpacity, ScrollView} from 'react-native';
+import {Text, View, TouchableOpacity} from 'react-native';
 import {TabBar, TabView} from 'react-native-tab-view';
-import {useWindowDimensions} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import BFPager from '../../components/pager/BFPager';
 const BeverageFoodView = ({navigation}: any) => {
@@ -39,7 +40,6 @@ const BeverageFoodView = ({navigation}: any) => {
     },
   ]);
 
-  const layout = useWindowDimensions();
   const renderScene = ({route}: any) => {
     switch (route.key) {
       case 'combo':
@@ -53,7 +53,7 @@ const BeverageFoodView = ({navigation}: any) => {
     }
   };
   return (
-    <View className="min-h-screen bg-black">
+    <View className="flex-1 bg-black">
       <TabView
         navigationState={{index, routes}}
         renderScene={renderScene}
@@ -73,16 +73,32 @@ const BeverageFoodView = ({navigation}: any) => {
             style={{backgroundColor: 'black'}}
           />
         )}
-        // style={{height: 1000}}
-        initialLayout={{width: layout.width, height: layout.height}}
+        // initialLayout={{width: layout.width, height: layout.height}}
       />
-      <TouchableOpacity
-        className="bg-black py-2 rounded mx-5"
-        onPress={() => navigation.push('Payment')}>
-        <Text className="text-white font-poppins_semibold text-lg text-center">
-          Confirm
-        </Text>
-      </TouchableOpacity>
+      <View className="bg-black py-4 ">
+        {true && (
+          <View className="flex-row border-white/75 border-2 self-center mb-4 py-2">
+            <View className="px-4 items-center justify-center">
+              <Text className="text-white/75 font-poppins_medium">SEAT</Text>
+              <Text className="text-white font-poppins_medium text-xs">1</Text>
+            </View>
+            <View className="h-full border-l-2 border-white/75" />
+            <View className="px-4 items-center justify-center">
+              <Text className="text-white/75 font-poppins_medium">
+                SUB-TOTAL
+              </Text>
+              <Text className="text-white font-poppins_semibold">$ {1000}</Text>
+            </View>
+          </View>
+        )}
+        <TouchableOpacity
+          className="bg-gray-500 rounded py-1 mx-5"
+          onPress={() => navigation.push('Payment')}>
+          <Text className=" text-white font-poppins_bold text-lg text-center">
+            Proceed
+          </Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };

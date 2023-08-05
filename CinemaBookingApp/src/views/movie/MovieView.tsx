@@ -1,16 +1,15 @@
+/* eslint-disable react-native/no-inline-styles */
 import * as React from 'react';
 import {
   View,
-  StyleSheet,
   ScrollView,
   StatusBar,
   ActivityIndicator,
   FlatList,
 } from 'react-native';
-import {COLOR} from '../../themes/themes';
-import HeaderUser from '../../components/HeaderUser';
-import SearchBar from '../../components/SearchBar';
-import CategoryText from '../../components/CategoryText';
+import HeaderUser from '../../components/container/HeaderUser';
+import SearchBar from '../../components/container/SearchBar';
+import CategoryText from '../../components/container/CategoryText';
 import MovieCard from '../../components/card/MovieCard';
 import {
   baseImagePath,
@@ -18,8 +17,6 @@ import {
   getTopRatedMovies,
   getUpComingMovies,
 } from '../../api/ApiHandler';
-
-// const {width} = Dimensions.get('window');
 
 const MovieView = ({navigation}: any) => {
   const [newMovieList, setNewMovieList] = React.useState([]);
@@ -29,14 +26,14 @@ const MovieView = ({navigation}: any) => {
 
   React.useEffect(() => {
     (async () => {
+      let tempNewMovie = await getUpComingMovies();
+      setNewMovieList(tempNewMovie.results);
+
       let tempPopular = await getPopularMovies();
       setPopularMovieList(tempPopular.results);
 
       let tempTopRated = await getTopRatedMovies();
       setRecommendedMovieList(tempTopRated.results);
-
-      let tempNewMovie = await getUpComingMovies();
-      setNewMovieList(tempNewMovie.results);
     })();
   }, []);
 
@@ -47,105 +44,89 @@ const MovieView = ({navigation}: any) => {
   ) {
     return (
       <ScrollView
-        style={styles.container}
+        className="bg-black"
         bounces={false}
-        contentContainerStyle={styles.scrollViewContainer}>
+        contentContainerStyle={{flex: 1}}>
         <StatusBar hidden />
 
         <HeaderUser />
         <SearchBar />
 
-        <View style={styles.loadingContainer}>
-          <ActivityIndicator size={'large'} color={COLOR.White} />
+        <View className="flex-1 justify-center items-center">
+          <ActivityIndicator size={'large'} color="white" />
         </View>
       </ScrollView>
     );
   }
 
   return (
-    <ScrollView style={styles.container} bounces={false}>
-      <HeaderUser />
-      <SearchBar />
-      <CategoryText title={'New Releases'} subtitle={'View All'} />
-      <FlatList
-        data={newMovieList}
-        keyExtractor={(item: any) => item.id}
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        bounces={false}
-        contentContainerStyle={styles.containerGap36}
-        renderItem={({item, index}) => (
-          <MovieCard
-            cardFunction={() => {
-              navigation.push('Booking', {movieid: item.id});
-            }}
-            isFirst={index === 0 ? true : false}
-            isLast={index === newMovieList?.length - 1 ? true : false}
-            title={item.original_title}
-            imagePath={baseImagePath('w342', item.poster_path)}
-          />
-        )}
-      />
-      <CategoryText title={'Popular in cinemas'} subtitle={'View All'} />
-      <FlatList
-        data={popularMovieList}
-        keyExtractor={(item: any) => item.id}
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        bounces={false}
-        contentContainerStyle={styles.containerGap36}
-        renderItem={({item, index}) => (
-          <MovieCard
-            cardFunction={() => {
-              navigation.push('Booking', {movieid: item.id});
-            }}
-            isFirst={index === 0 ? true : false}
-            isLast={index === popularMovieList?.length - 1 ? true : false}
-            title={item.original_title}
-            imagePath={baseImagePath('w342', item.poster_path)}
-          />
-        )}
-      />
-      <CategoryText title={'Recommended for you'} subtitle={'View All'} />
-      <FlatList
-        data={recommendedMovieList}
-        keyExtractor={(item: any) => item.id}
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        bounces={false}
-        contentContainerStyle={styles.containerGap36}
-        renderItem={({item, index}) => (
-          <MovieCard
-            cardFunction={() => {
-              navigation.push('Booking', {movieid: item.id});
-            }}
-            isFirst={index === 0 ? true : false}
-            isLast={index === recommendedMovieList?.length - 1 ? true : false}
-            title={item.original_title}
-            imagePath={baseImagePath('w342', item.poster_path)}
-          />
-        )}
-      />
+    <ScrollView bounces={false}>
+      <View className="bg-black">
+        <HeaderUser />
+        <SearchBar />
+        <CategoryText title={'New Releases'} subtitle={'View All'} />
+        <FlatList
+          data={newMovieList}
+          keyExtractor={(item: any) => item.id}
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          bounces={false}
+          contentContainerStyle={{gap: 36}}
+          renderItem={({item, index}) => (
+            <MovieCard
+              cardFunction={() => {
+                navigation.push('Booking', {movieid: item.id});
+              }}
+              isFirst={index === 0 ? true : false}
+              isLast={index === newMovieList?.length - 1 ? true : false}
+              title={item.original_title}
+              imagePath={baseImagePath('w342', item.poster_path)}
+            />
+          )}
+        />
+        <CategoryText title={'Popular in cinemas'} subtitle={'View All'} />
+        <FlatList
+          data={popularMovieList}
+          keyExtractor={(item: any) => item.id}
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          bounces={false}
+          contentContainerStyle={{gap: 36}}
+          renderItem={({item, index}) => (
+            <MovieCard
+              cardFunction={() => {
+                navigation.push('Booking', {movieid: item.id});
+              }}
+              isFirst={index === 0 ? true : false}
+              isLast={index === popularMovieList?.length - 1 ? true : false}
+              title={item.original_title}
+              imagePath={baseImagePath('w342', item.poster_path)}
+            />
+          )}
+        />
+        <CategoryText title={'Recommended for you'} subtitle={'View All'} />
+        <FlatList
+          data={recommendedMovieList}
+          keyExtractor={(item: any) => item.id}
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          bounces={false}
+          contentContainerStyle={{gap: 36}}
+          renderItem={({item, index}) => (
+            <MovieCard
+              cardFunction={() => {
+                navigation.push('Booking', {movieid: item.id});
+              }}
+              isFirst={index === 0 ? true : false}
+              isLast={index === recommendedMovieList?.length - 1 ? true : false}
+              title={item.original_title}
+              imagePath={baseImagePath('w342', item.poster_path)}
+            />
+          )}
+        />
+      </View>
     </ScrollView>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: COLOR.Black,
-    display: 'flex',
-  },
-  loadingContainer: {
-    flex: 1,
-    alignSelf: 'center',
-    justifyContent: 'center',
-  },
-  scrollViewContainer: {
-    flex: 1,
-  },
-  containerGap36: {
-    gap: 36,
-  },
-});
 
 export default MovieView;

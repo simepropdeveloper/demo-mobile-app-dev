@@ -7,6 +7,9 @@ module.exports = {
   ],
   theme: {
     extend: {
+      backgroundColor: {
+        grey: '#333333',
+      },
       fontFamily: {
         poppins_black: 'Poppins-Black',
         poppins_bold: 'Poppins-Bold',
@@ -17,13 +20,6 @@ module.exports = {
         poppins_regular: 'Poppins-Regular',
         poppins_semibold: ['Poppins-SemiBold', 'serif'],
         poppins_thin: 'Poppins-Thin',
-      },
-      textColor: {
-        whiteRGBA75: 'rgba(255,255,255,0.75)',
-        whiteRGBA50: 'rgba(255,255,255,0.50)',
-        whiteRGBA32: 'rgba(255,255,255,0.32)',
-        whiteRGBA15: 'rgba(255,255,255,0.15)',
-        blackRGB10: 'rgba(0,0,0,0.1)',
       },
     },
   },

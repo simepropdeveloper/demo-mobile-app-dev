@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {Text, View, Image} from 'react-native';
-// import '';
+
 const TicketCard = () => {
   return (
     <View className="rounded-sm border-gray-400 border-2 py-4">
@@ -18,16 +18,16 @@ const TicketCard = () => {
             <Text className="text-white font-poppins_bold text-lg py-[0.5]">
               {'The Little Mermaid'}
             </Text>
-            <Text className="text-whiteRGBA50 font-poppins_regular text-xs py-[0.5]">
+            <Text className="text-white/50 font-poppins_regular text-xs py-[0.5]">
               {'Adventure, Family, Fantasy, Romance'}
             </Text>
-            <Text className="text-whiteRGBA50 font-poppins_regular text-xs py-[0.5]">
+            <Text className="text-white/50 font-poppins_regular text-xs py-[0.5]">
               {'1h 37m'}
             </Text>
-            <Text className="text-whiteRGBA50 font-poppins_regular text-xs py-[0.5]">
+            <Text className="text-white/50 font-poppins_regular text-xs py-[0.5]">
               {'English IMDb 3D'}
             </Text>
-            <Text className="text-whiteRGBA50 font-poppins_regular text-xs py-[0.5]">
+            <Text className="text-white/50 font-poppins_regular text-xs py-[0.5]">
               {'Classic Tickets'}
             </Text>
           </View>
@@ -39,26 +39,26 @@ const TicketCard = () => {
       {/* cinema details */}
       <View className="px-4">
         <View className="py-6">
-          <Text className="text-whiteRGBA50 font-poppins_medium">Cinema</Text>
+          <Text className="text-white/50 font-poppins_medium">Cinema</Text>
           <Text className="text-white font-poppins_medium">
             Genesis Deluxe Lagos: Maryland mall
           </Text>
         </View>
         <View className="flex-row items-start justify-center gap-4">
           <View className="flex-1">
-            <Text className="text-whiteRGBA50 font-poppins_medium">Date</Text>
+            <Text className="text-white/50 font-poppins_medium">Date</Text>
             <Text className="text-white font-poppins_medium">Nov 20, 2021</Text>
           </View>
           <View className="flex-1">
-            <Text className="text-whiteRGBA50 font-poppins_medium">Seat</Text>
+            <Text className="text-white/50 font-poppins_medium">Seat</Text>
             <Text className="text-white font-poppins_medium">F4,F5</Text>
           </View>
           <View className="flex-1">
-            <Text className="text-whiteRGBA50 font-poppins_medium">Start</Text>
+            <Text className="text-white/50 font-poppins_medium">Start</Text>
             <Text className="text-white font-poppins_medium">5.40PM</Text>
           </View>
           <View className="flex-1">
-            <Text className="text-whiteRGBA50 font-poppins_medium">End</Text>
+            <Text className="text-white/50 font-poppins_medium">End</Text>
             <Text className="text-white font-poppins_medium">7.20PM</Text>
           </View>
         </View>

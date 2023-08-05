@@ -1,8 +1,8 @@
 import * as React from 'react';
 import {Text, View, ScrollView, FlatList, TouchableOpacity} from 'react-native';
-import Dropdown from '../../components/Dropdown';
+import Dropdown from '../../components/container/Dropdown';
 import FAIcon from 'react-native-vector-icons/FontAwesome';
-import FAAIcon from 'react-native-vector-icons/FontAwesome6';
+import FAAIcon from 'react-native-vector-icons/AntDesign';
 const month = [
   'January',
   'February',
@@ -67,7 +67,6 @@ const generateSeats = () => {
     }
     rowSeats.push(columnSeats);
   }
-  console.log(rowSeats);
   return rowSeats;
 };
 const TicketBookingView = ({navigation}: any) => {
@@ -116,7 +115,7 @@ const TicketBookingView = ({navigation}: any) => {
   return (
     <View className="flex-1 bg-black">
       <ScrollView>
-        <View className="px-5 pt-5 pb-36">
+        <View className="p-5 flex-[0.8]">
           <Text className="font-poppins_semibold text-white text-sm">
             Where would you like to see the movie? Kindly select as appropiate
           </Text>
@@ -135,7 +134,7 @@ const TicketBookingView = ({navigation}: any) => {
             renderItem={({item}) => (
               <View className="bg-gray-600  rounded px-2 h-[100] justify-end">
                 <View className="pb-1">
-                  <Text className="text-whiteRGBA50 font-poppins_regular text-xs">
+                  <Text className="text-white/50 font-poppins_regular text-xs">
                     Ticket from
                   </Text>
                   <Text className="text-white font-poppins_medium flex text-sm">
@@ -181,7 +180,7 @@ const TicketBookingView = ({navigation}: any) => {
                 size={15}
                 color="rgba(255,255,255,0.75)"
               />
-              <Text className="font-poppins_medium text-whiteRGBA75">
+              <Text className="font-poppins_medium text-white/75">
                 {month[new Date().getMonth()]}
               </Text>
               <FAIcon
@@ -210,7 +209,7 @@ const TicketBookingView = ({navigation}: any) => {
                     <Text className="text-white font-poppins_semibold">
                       {item.day}
                     </Text>
-                    <Text className="text-whiteRGBA75 font-poppins_medium">
+                    <Text className="text-white/75 font-poppins_medium">
                       {item.date}
                     </Text>
                   </TouchableOpacity>
@@ -248,17 +247,17 @@ const TicketBookingView = ({navigation}: any) => {
                   size={18}
                   color={'rgba(255,255,255,0.35)'}
                 />
-                <Text className="text-whiteRGBA75 font-poppins_medium text-center text-sm">
+                <Text className="text-white/75 font-poppins_medium text-center text-sm">
                   Available
                 </Text>
               </View>
               <View className="flex-1 flex-row gap-1 items-center justify-center">
                 <FAAIcon
-                  name="square-xmark"
+                  name="closesquare"
                   size={18}
                   color={'rgba(255,255,255,0.55)'}
                 />
-                <Text className="text-whiteRGBA75 font-poppins_medium text-center text-sm">
+                <Text className="text-white/75 font-poppins_medium text-center text-sm">
                   Unavailable
                 </Text>
               </View>
@@ -268,14 +267,14 @@ const TicketBookingView = ({navigation}: any) => {
                   size={18}
                   color={'rgba(255,255,255,0.75)'}
                 />
-                <Text className="text-whiteRGBA75 font-poppins_medium text-center text-sm">
+                <Text className="text-white/75 font-poppins_medium text-center text-sm">
                   Selected
                 </Text>
               </View>
             </View>
             <View className="py-5">
               <View className="w-full  border-white/75 border-t-8 rounded-full">
-                <Text className="text-whiteRGBA75 text-xs font-poppins_medium text-center py-4">
+                <Text className="text-white/75 text-xs font-poppins_medium text-center py-4">
                   Screen
                 </Text>
               </View>
@@ -284,7 +283,7 @@ const TicketBookingView = ({navigation}: any) => {
                 <View className="gap-4 justify-center">
                   {['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'].map((item, idx) => (
                     <Text
-                      className="font-poppins_medium text-whiteRGBA75 text-base"
+                      className="font-poppins_medium text-white/75 text-base"
                       key={`${item}-${idx}-1`}>
                       {item}
                     </Text>
@@ -301,7 +300,7 @@ const TicketBookingView = ({navigation}: any) => {
                           }>
                           {subItem.taken ? (
                             <FAAIcon
-                              name="square-xmark"
+                              name="closesquare"
                               size={22}
                               color={'rgba(255,255,255,0.55)'}
                             />
@@ -324,7 +323,7 @@ const TicketBookingView = ({navigation}: any) => {
                 <View className="gap-4 justify-center">
                   {['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'].map((item, idx) => (
                     <Text
-                      className="font-poppins_medium text-whiteRGBA75 text-base"
+                      className="font-poppins_medium text-white/75 text-base"
                       key={`${item}-${idx}-2`}>
                       {item}
                     </Text>
@@ -335,7 +334,7 @@ const TicketBookingView = ({navigation}: any) => {
           </View>
         </View>
       </ScrollView>
-      <View className="absolute bottom-0 left-0 right-0 ">
+      <View className="absolute bottom-0 left-0 right-0 flex-[0.2]">
         <View className="bg-black py-4 ">
           {selectedSeats.length > 0 && (
             <View className="flex-row border-white/75 border-2 self-center mb-4 py-2">
@@ -343,7 +342,9 @@ const TicketBookingView = ({navigation}: any) => {
                 <Text className="text-white/75 font-poppins_medium">SEAT</Text>
                 <View className="flex-row flex-wrap gap-2 ">
                   {selectedSeats.map(item => (
-                    <View className=" rounded border-white border-[1px] px-1">
+                    <View
+                      className=" rounded border-white border-[1px] px-1"
+                      key={item}>
                       <Text className="text-white font-poppins_medium text-xs">
                         {item}
                       </Text>
@@ -370,7 +371,7 @@ const TicketBookingView = ({navigation}: any) => {
             </TouchableOpacity>
             <TouchableOpacity
               className="bg-gray-500 rounded flex-1 py-1"
-              onPress={() => navigation.push('BookingSummary')}>
+              onPress={() => navigation.push('BeverageFood')}>
               <Text className=" text-white font-poppins_bold text-lg text-center">
                 Proceed
               </Text>

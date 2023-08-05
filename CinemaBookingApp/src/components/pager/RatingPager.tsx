@@ -1,9 +1,10 @@
+/* eslint-disable react-native/no-inline-styles */
 import * as React from 'react';
-import {Text, View, StyleSheet, FlatList} from 'react-native';
+import {Text, View, FlatList} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import CategoryText from '../CategoryText';
+import CategoryText from '../container/CategoryText';
 import ReviewCard from '../card/ReviewCard';
-import {COLOR, FONTFAMILY} from '../../themes/themes';
+// import {COLOR, FONTFAMILY} from '../../themes/themes';
 type Rating = {
   '5star': number;
   '4star': number;
@@ -12,7 +13,11 @@ type Rating = {
   '1star': number;
   total: number;
 };
-const RatingPager = (props: any) => {
+interface Props {
+  movie: any;
+  reviews: any;
+}
+const RatingPager: React.FC<Props> = ({movie, reviews}) => {
   const [rates, setRates] = React.useState<Rating>();
 
   React.useEffect(() => {
@@ -24,98 +29,87 @@ const RatingPager = (props: any) => {
       '1star': 0,
       total: 0,
     };
-    props.reviews.results.forEach((element: any) => {
-      const x = element.author_details.rating;
-      if (x / 2 >= 4 && x / 2 < 5) {
-        rating['4star'] += 1;
-      } else if (x / 2 >= 3 && x / 2 < 4) {
-        rating['3star'] += 1;
-      } else if (x / 2 >= 2 && x / 2 < 3) {
-        rating['2star'] += 1;
-      } else if (x / 2 >= 1 && x / 2 < 2) {
-        rating['1star'] += 1;
-      } else if (x / 2 <= 5) {
-        rating['5star'] += 1;
-      }
-    });
-    rating.total =
-      rating['1star'] +
-      rating['2star'] +
-      rating['3star'] +
-      rating['4star'] +
-      rating['5star'];
+    if (reviews.results.length > 0) {
+      reviews.results.forEach((element: any) => {
+        const x = element.author_details.rating;
+        if (x / 2 >= 4 && x / 2 < 5) {
+          rating['4star'] += 1;
+        } else if (x / 2 >= 3 && x / 2 < 4) {
+          rating['3star'] += 1;
+        } else if (x / 2 >= 2 && x / 2 < 3) {
+          rating['2star'] += 1;
+        } else if (x / 2 >= 1 && x / 2 < 2) {
+          rating['1star'] += 1;
+        } else if (x / 2 <= 5) {
+          rating['5star'] += 1;
+        }
+      });
+      rating.total =
+        rating['1star'] +
+        rating['2star'] +
+        rating['3star'] +
+        rating['4star'] +
+        rating['5star'];
+    }
     setRates(rating);
-  }, [props.reviews.results]);
+  }, [reviews.results]);
   return (
-    <View style={{paddingTop: 10}}>
-      <View style={[styles.container, styles.padding]}>
-        <Icon name="star" color={COLOR.Yellow} size={18} />
-        <Text style={[styles.text, {paddingLeft: 10}]}>{`${(
-          props.movie.vote_average / 2
-        ).toFixed(2)} (${props.reviews.total_results}) Reviews`}</Text>
+    <View className="pt-2">
+      <View className="flex-row items-center mx-5 my-2">
+        <Icon name="star" color="rgb(250 204 21)" size={18} />
+        <Text className="pl-2  font-poppins_semibold text-white text-sm">{`${(
+          movie.vote_average / 2
+        ).toFixed(2)} (${reviews.total_results}) Reviews`}</Text>
       </View>
-      <View
-        style={{
-          borderBottomColor: COLOR.WhiteRGBA50,
-          borderBottomWidth: StyleSheet.hairlineWidth,
-          marginHorizontal: 20,
-        }}
-      />
-      <View style={styles.padding}>
+      <View className="border-white/50 mx-5 border-b-[0.6px]" />
+      <View className="mx-5 my-2">
         {[1, 2, 3, 4, 5].reverse().map(idx => (
-          <View style={[styles.container]} key={idx}>
-            <View style={[styles.container, {flex: 1}]}>
+          <View className="flex-row items-center" key={idx}>
+            <View className="flex-row items-center flex-1 gap-1">
               {[...Array(idx)].map(idx1 => (
                 <Icon
                   key={`idx-${Math.floor(Math.random() * 1000 + 1)}-${
                     idx1 + 1 * 5
                   }`}
                   name="star"
-                  style={{paddingVertical: 2}}
-                  color={COLOR.Yellow}
+                  className="py-1 "
+                  color="rgb(250 204 21)"
                   size={15}
                 />
               ))}
             </View>
-            <View style={styles.progressbar}>
+            <View className="rounded-lg h-1 flex-1 bg-white">
               <View
+                className={'bg-yellow-400 rounded-lg flex-1 '}
                 style={{
-                  backgroundColor: COLOR.Yellow,
-                  borderRadius: 10,
-                  flex: 1,
                   width:
-                    rates !== undefined
+                    rates !== undefined && rates.total !== 0
                       ? (rates?.[`${idx}star` as keyof object] / rates?.total) *
                         100
                       : 0,
                 }}
               />
             </View>
-            <Text style={styles.textCountRate}>{`(${
+            <Text className="px-5 font-poppins_regular text-white text-xs">{`(${
               rates?.[`${idx}star` as keyof object]
             })`}</Text>
           </View>
         ))}
       </View>
-      <View
-        style={{
-          borderBottomColor: COLOR.WhiteRGBA50,
-          borderBottomWidth: StyleSheet.hairlineWidth,
-          marginHorizontal: 20,
-        }}
-      />
+      <View className="border-white/50 mx-5 border-b-[0.6px]" />
+
       <CategoryText title={'Customer Reviews'} subtitle={'see all'} />
       <FlatList
-        data={props.reviews.results}
+        data={reviews.results}
         keyExtractor={(item: any) => item.id}
         horizontal
         showsHorizontalScrollIndicator={false}
         bounces={false}
-        contentContainerStyle={styles.containerGap28}
+        contentContainerStyle={{gap: 28}}
         renderItem={({item, index}: any) => (
           <ReviewCard
             isFirst={index === 0 ? true : false}
-            isLast={index === props.reviews.results?.length - 1 ? true : false}
+            isLast={index === reviews.results?.length - 1 ? true : false}
             review={item}
           />
         )}
@@ -125,37 +119,3 @@ const RatingPager = (props: any) => {
 };
 
 export default RatingPager;
-
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  padding: {
-    marginHorizontal: 20,
-    marginVertical: 10,
-  },
-  text: {
-    color: COLOR.White,
-    fontFamily: FONTFAMILY.poppins_semibold,
-    fontSize: 14,
-  },
-  textCountRate: {
-    color: COLOR.White,
-    fontFamily: FONTFAMILY.poppins_regular,
-    fontSize: 12,
-    // flex: 1,
-    paddingHorizontal: 20,
-  },
-  containerGap28: {
-    gap: 28,
-  },
-  progressbar: {
-    borderRadius: 10,
-    height: 5,
-    backgroundColor: COLOR.White,
-    width: 180,
-    flex: 1,
-    // padding: 10,
-  },
-});

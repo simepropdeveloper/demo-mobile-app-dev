@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import * as React from 'react';
 import {
   ActivityIndicator,
@@ -7,7 +8,7 @@ import {
   StatusBar,
   TouchableOpacity,
 } from 'react-native';
-import {Text, View, StyleSheet} from 'react-native';
+import {Text, View} from 'react-native';
 
 import {
   baseImagePath,
@@ -15,15 +16,16 @@ import {
   getMovieDetails,
   getMovieReviews,
 } from '../../api/ApiHandler';
-import {COLOR, FONTFAMILY} from '../../themes/themes';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import Genre from '../../components/Genre';
 
-import Star from '../../components/Star';
-import MovieTabView from '../../components/MovieTabView';
+import Icon from 'react-native-vector-icons/FontAwesome';
+
+import MovieTabView from '../../components/tabview/MovieTabView';
+import Genre from '../../components/container/Genre';
+import Star from '../../components/container/Star';
+import YoutubeIframe from 'react-native-youtube-iframe';
 
 const DetailMovieView = ({navigation, route}: any) => {
-  // const [urlTrailer, setUrlTrailer] = React.useState('');
+  const [urlTrailer, setUrlTrailer] = React.useState('');
   const [movieDetails, setMovieDetails] = React.useState<any>(null);
   const [movieCasts, setMovieCasts] = React.useState<any>(null);
   const [movieReviews, setMovieReviews] = React.useState<any>(null);
@@ -32,6 +34,7 @@ const DetailMovieView = ({navigation, route}: any) => {
     (async () => {
       let temp = await getMovieDetails(route.params.movieid);
       setMovieDetails(temp);
+      setUrlTrailer(temp.videos.results[0].key);
 
       let tempCasts = await getMovieCasts(route.params.movieid);
       setMovieCasts(tempCasts);
@@ -41,74 +44,85 @@ const DetailMovieView = ({navigation, route}: any) => {
     })();
   }, [route.params.movieid]);
 
+  React.useEffect(() => {
+    console.log(urlTrailer);
+  }, [urlTrailer]);
   if (movieDetails === null || movieCasts === null || movieReviews === null) {
     return (
       <ScrollView
-        style={styles.container}
+        className="bg-black"
         bounces={false}
-        contentContainerStyle={styles.scrollViewContainer}>
+        contentContainerStyle={{flex: 1}}>
         <StatusBar hidden />
-        <View style={styles.loadingContainer}>
-          <ActivityIndicator size={'large'} color={COLOR.White} />
+        <View className="flex-1 items-center justify-center">
+          <ActivityIndicator size={'large'} color="white" />
         </View>
       </ScrollView>
     );
   }
   const {width} = Dimensions.get('window');
   return (
-    <View style={{flex: 1}}>
-      <ScrollView
-        style={[styles.container]}
-        bounces={false}
-        contentContainerStyle={{flexGrow: 1}}>
-        <Image
+    <View className="bg-black flex-1">
+      <ScrollView bounces={false}>
+        <YoutubeIframe
+          videoId={urlTrailer}
+          height={250}
+          width={width}
+          initialPlayerParams={{
+            modestbranding: true,
+          }}
+        />
+        {/* <Image
           width={width}
           height={200}
           source={{uri: baseImagePath('w342', movieDetails.backdrop_path)}}
-        />
-        <View style={styles.detailMovieContainer}>
-          <View style={styles.movieContainer}>
+        /> */}
+        <View className="-mt-8 rounded-tl-2xl border-gray-500 rounded-tr-2xl bg-black justify-center items-center">
+          <View className="flex-row m-5">
             <Image
-              style={styles.image}
+              className="rounded-lg self-center"
               width={120}
               height={180}
               source={{uri: baseImagePath('w342', movieDetails.poster_path)}}
             />
-            <View style={[styles.margin20, {flex: 1}]}>
-              <View style={styles.rowContainer}>
-                <Text style={[styles.textTitle, {flex: 1}]}>
+            <View className="ml-3 flex-1 ">
+              <View className="flex-row items-center mb-1">
+                <Text className=" font-poppins_bold text-white text-lg flex-1">
                   {movieDetails.original_title}
                 </Text>
-                <Icon
-                  name="heart-o"
-                  color={COLOR.White}
-                  size={20}
-                  // style={{flex: 1}}
-                />
+                <Icon name="heart-o" color="white" size={20} />
               </View>
 
-              <View style={[styles.rowContainer, {flexWrap: 'wrap'}]}>
+              <View className="flex-row items-center flex-wrap mb-2">
                 {movieDetails.genres.map((item: {name: any; id: any}) => {
                   return <Genre genre={item.name} key={item.id} />;
                 })}
               </View>
 
-              <View style={[styles.rowContainer, {gap: 10, marginVertical: 5}]}>
-                <View style={styles.rowContainer}>
-                  <Icon size={15} name="calendar-o" color={COLOR.WhiteRGBA75} />
-                  <Text style={[styles.text, styles.margin5]}>
+              <View className="flex-row items-center gap-2 mb-2">
+                <View className="flex-row items-center">
+                  <Icon
+                    size={15}
+                    name="calendar-o"
+                    color="rgba(255,255,255,0.75)"
+                  />
+                  <Text className="text-white/75 text-xs ml-1">
                     {movieDetails.release_date}
                   </Text>
                 </View>
-                <View style={styles.rowContainer}>
-                  <Icon size={15} name="tv" color={COLOR.WhiteRGBA75} />
-                  <Text style={[styles.text, styles.margin5]}>
+                <View className="flex-row items-center">
+                  <Icon size={15} name="tv" color="rgba(255,255,255,0.75)" />
+                  <Text className="text-white/75 text-xs ml-1">
                     {movieDetails.adult ? '15+' : '13+'}
                   </Text>
                 </View>
-                <View style={styles.rowContainer}>
-                  <Icon size={15} name="clock-o" color={COLOR.WhiteRGBA75} />
-                  <Text style={[styles.text, styles.margin5]}>
+                <View className="flex-row items-center">
+                  <Icon
+                    size={15}
+                    name="clock-o"
+                    color="rgba(255,255,255,0.75)"
+                  />
+                  <Text className="text-white/75 text-xs ml-1">
                     {`${Math.floor(movieDetails.runtime / 60)}h ${
                       movieDetails.runtime -
                       Math.floor(movieDetails.runtime / 60) * 60
@@ -117,12 +131,12 @@ const DetailMovieView = ({navigation, route}: any) => {
                 </View>
               </View>
 
-              <View style={[styles.rowContainer, {gap: 3, marginVertical: 5}]}>
+              <View className="flex-row items-center  mb-2 ">
                 <Star
                   rate={movieDetails.vote_average}
-                  color={COLOR.WhiteRGBA50}
+                  color="rgba(255,255,255,0.50)"
                 />
-                <Text style={styles.text}>
+                <Text className="text-white/75 text-xs px-1">
                   {`${(movieDetails.vote_average / 2).toFixed(2)}/5 (${
                     movieReviews.total_results
                   })`}
@@ -136,81 +150,16 @@ const DetailMovieView = ({navigation, route}: any) => {
           casts={movieCasts}
           reviews={movieReviews}
         />
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => navigation.push('TicketBooking')}>
-          <Text style={[styles.textTitle, {textAlign: 'center'}]}>
-            Book Ticket
-          </Text>
-        </TouchableOpacity>
       </ScrollView>
+      <TouchableOpacity
+        className="rounded-md px-5 py-1 mx-5 mt-2 mb-5  bg-white/40 "
+        onPress={() => navigation.push('TicketBooking')}>
+        <Text className="text-center font-poppins_bold text-white text-lg">
+          Book Ticket
+        </Text>
+      </TouchableOpacity>
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  button: {
-    borderRadius: 5,
-    width: '90%',
-    paddingHorizontal: 20,
-    paddingVertical: 5,
-    marginHorizontal: 20,
-    marginBottom: 20,
-    marginTop: 10,
-    alignSelf: 'center',
-    backgroundColor: COLOR.WhiteRGBA32,
-  },
-  container: {
-    backgroundColor: COLOR.Black,
-    display: 'flex',
-  },
-  loadingContainer: {
-    flex: 1,
-    alignSelf: 'center',
-    justifyContent: 'center',
-  },
-  scrollViewContainer: {
-    flex: 1,
-  },
-  rowContainer: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  text: {
-    color: COLOR.WhiteRGBA75,
-    fontSize: 11,
-  },
-  image: {
-    borderRadius: 10,
-    alignSelf: 'center',
-  },
-  textTitle: {
-    color: COLOR.White,
-    fontFamily: FONTFAMILY.poppins_bold,
-    fontSize: 20,
-  },
-  detailMovieContainer: {
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
-    backgroundColor: COLOR.Black,
-    marginTop: -20,
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  movieContainer: {
-    display: 'flex',
-    flexDirection: 'row',
-    marginVertical: 20,
-    marginHorizontal: 20,
-  },
-  margin20: {
-    marginLeft: 10,
-  },
-  margin5: {
-    marginLeft: 5,
-  },
-});
 
 export default DetailMovieView;

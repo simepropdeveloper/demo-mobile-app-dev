@@ -1,47 +1,37 @@
+/* eslint-disable react-native/no-inline-styles */
 import * as React from 'react';
-import {
-  Text,
-  View,
-  StyleSheet,
-  ScrollView,
-  Dimensions,
-  TouchableOpacity,
-} from 'react-native';
+import {Text, View, ScrollView, TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import {COLOR, FONTFAMILY} from '../../themes/themes';
-const {width, height} = Dimensions.get('window');
+
 const OrderCompletedView = ({navigation}: any) => {
   return (
     <ScrollView contentContainerStyle={{alignItems: 'center'}}>
-      <View style={styles.container}>
-        <Icon name="check-circle" size={150} color={COLOR.White} />
-        <Text style={styles.textBold}>{'Congratulations!'}</Text>
-        <Text style={[styles.textDesc, {paddingVertical: 10}]}>
+      <View className="min-h-screen justify-center items-center bg-black w-full">
+        <Icon name="check-circle" size={150} color="white" />
+        <Text className="font-poppins_bold text-white text-xl py-4">
+          {'Congratulations!'}
+        </Text>
+        <Text className="text-base font-poppins_regular text-clip text-white/75 text-center py-2">
           {
             'Your ticket purchase is successful, a confirmation has been sent to your e-mail'
           }
         </Text>
-        <View style={styles.buttonContainer}>
+        <View className="flex-row justify-center gap-4 my-4">
           <TouchableOpacity
-            style={styles.button}
+            className="flex-row items-center border-white border-[1px] rounded px-3 py-2  justify-center"
             onPress={() => navigation.reset({routes: [{name: 'BottomNav'}]})}>
-            <Icon name="arrow-left" size={20} color={COLOR.White} />
-            <Text style={styles.textDesc}>Main Menu</Text>
+            <Icon name="arrow-left" size={20} color="white" />
+            <Text className="text-base font-poppins_regular text-clip text-white/75 px-2">
+              Main Menu
+            </Text>
           </TouchableOpacity>
           <TouchableOpacity
-            style={styles.button}
-            onPress={
-              () => navigation.navigate({routes: [{name: 'Ticket'}]})
-              // navigation.reset({
-              //   index: 2,
-              //   actions: [
-              //     navigation.navigate({routes: [{name: 'BottomNav'}]}),
-              //     navigation.navigate({routes: [{name: 'Ticket'}]}),
-              //   ],
-              // })
-            }>
-            <Icon name="ticket-alt" size={20} color={COLOR.White} />
-            <Text style={styles.textDesc}>View Ticket</Text>
+            className="flex-row items-center border-white border-[1px] rounded px-3 py-2 justify-center"
+            onPress={() => navigation.navigate({routes: [{name: 'Ticket'}]})}>
+            <Icon name="ticket-alt" size={20} color="white" />
+            <Text className="text-base font-poppins_regular text-clip text-white/75 px-2">
+              View Ticket
+            </Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -50,42 +40,3 @@ const OrderCompletedView = ({navigation}: any) => {
 };
 
 export default OrderCompletedView;
-
-const styles = StyleSheet.create({
-  container: {
-    minHeight: height,
-    backgroundColor: COLOR.Black,
-    width: width,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  textBold: {
-    fontSize: 20,
-    fontFamily: FONTFAMILY.poppins_bold,
-    color: COLOR.White,
-    textAlign: 'center',
-    paddingVertical: 20,
-  },
-  textDesc: {
-    fontSize: 16,
-    fontFamily: FONTFAMILY.poppins_regular,
-    color: COLOR.WhiteRGBA75,
-    textAlign: 'center',
-  },
-  button: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    borderColor: COLOR.White,
-    borderWidth: 1,
-    borderRadius: 5,
-    paddingVertical: 8,
-    paddingHorizontal: 10,
-    gap: 10,
-  },
-  buttonContainer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    gap: 10,
-    marginVertical: 20,
-  },
-});

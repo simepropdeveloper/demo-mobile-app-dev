@@ -1,32 +1,37 @@
 import * as React from 'react';
-import {Text, View, StyleSheet, Image, TouchableOpacity} from 'react-native';
+import {Text, View, Image, TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
-import {COLOR, FONTFAMILY} from '../../themes/themes';
-const MovieCard = (props: any) => {
+interface Props {
+  isFirst: boolean;
+  isLast: boolean;
+  imagePath: string;
+  title: string;
+  cardFunction: any;
+}
+const MovieCard: React.FC<Props> = ({
+  isFirst,
+  isLast,
+  imagePath,
+  title,
+  cardFunction,
+}) => {
   return (
-    <TouchableOpacity onPress={() => props.cardFunction()}>
+    <TouchableOpacity onPress={() => cardFunction()}>
       <View
-        style={[
-          styles.container,
-          {
-            marginLeft: props.isFirst ? 20 : 0,
-            marginRight: props.isLast ? 20 : 0,
-          },
-        ]}>
+        className={`w-[150] h-auto ${isFirst ? 'ml-5' : 'ml-0'} ${
+          isLast ? 'mr-5' : 'mr-0'
+        }`}>
         <Image
           source={{
-            uri: props.imagePath,
+            uri: imagePath,
           }}
-          style={styles.images}
+          className="rounded-lg w-[150] h-[200]"
         />
-        <View style={styles.containerText}>
-          <Text style={styles.text}>{props.title}</Text>
-          <Icon
-            name="more-vertical"
-            size={20}
-            color={COLOR.White}
-            //   style={{flex: 2}}
-          />
+        <View className="flex-row justify-between items-center my-2">
+          <Text className="text-white font-poppins_semibold text-sm">
+            {title}
+          </Text>
+          <Icon name="more-vertical" size={20} color="white" />
         </View>
       </View>
     </TouchableOpacity>
@@ -34,28 +39,3 @@ const MovieCard = (props: any) => {
 };
 
 export default MovieCard;
-
-const styles = StyleSheet.create({
-  container: {
-    width: 150,
-    height: 'auto',
-    // marginHorizontal: 20,
-  },
-  containerText: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginVertical: 10,
-  },
-  text: {
-    color: COLOR.White,
-    fontFamily: FONTFAMILY.poppins_semibold,
-    fontSize: 13,
-    // flex: 1,
-  },
-  images: {
-    width: 150,
-    height: 200,
-    borderRadius: 10,
-  },
-});

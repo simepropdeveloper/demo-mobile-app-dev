@@ -27,7 +27,7 @@ const BookingSummaryView = ({navigation}: any) => {
           <View className="flex-row py-2">
             <View className="flex-1">
               <Text className="text-white font-poppins_medium">Tickets</Text>
-              <Text className="text-whiteRGBA50 font-poppins_regular text-xs">
+              <Text className="text-white/50 font-poppins_regular text-xs">
                 Classic tickets (x2)
               </Text>
             </View>
@@ -40,7 +40,7 @@ const BookingSummaryView = ({navigation}: any) => {
               <Text className="text-white font-poppins_medium">
                 Food & Beverage
               </Text>
-              <Text className="text-whiteRGBA50 font-poppins_regular text-xs">
+              <Text className="text-white/50 font-poppins_regular text-xs">
                 Fresh XL Combo (x2)
               </Text>
             </View>
@@ -51,7 +51,7 @@ const BookingSummaryView = ({navigation}: any) => {
           <View className="flex-row py-2">
             <View className="flex-1">
               <Text className="text-white font-poppins_medium">Charges</Text>
-              <Text className="text-whiteRGBA50 font-poppins_regular text-xs">
+              <Text className="text-white/50 font-poppins_regular text-xs">
                 Service charge
               </Text>
             </View>

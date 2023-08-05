@@ -1,12 +1,5 @@
 import * as React from 'react';
-import {
-  Text,
-  View,
-  TouchableHighlight,
-  Modal,
-  FlatList,
-  TouchableOpacity,
-} from 'react-native';
+import {Text, View, Modal, FlatList, TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 interface Props {
   label: string;
@@ -28,7 +21,9 @@ const Dropdown: React.FC<Props> = ({label, data, onSelect}) => {
             <TouchableOpacity
               className="bg-gray-200"
               onPress={() => {
-                setSelectedItem(item), setVisible(!visible);
+                setSelectedItem(item);
+                setVisible(!visible);
+                onSelect(item);
               }}>
               <Text className="text-black font-poppins_regular flex-1 px-5">
                 {item.value}

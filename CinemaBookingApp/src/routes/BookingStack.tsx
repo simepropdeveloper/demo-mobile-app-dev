@@ -4,7 +4,6 @@ import DetailMovieView from '../views/movie/DetailMovieView';
 import TicketBookingView from '../views/booking/TicketBookingView';
 import CardPaymentView from '../views/payment/CardPaymentView';
 import OrderCompletedView from '../views/status/OrderCompletedView';
-import {COLOR} from '../themes/themes';
 import PaymentView from '../views/payment/PaymentView';
 import BookingSummaryView from '../views/booking/BookingSummaryView';
 import BeverageFoodView from '../views/booking/BeverageFoodView';
@@ -21,7 +20,7 @@ const BookingStack = ({route}: any) => {
           animation: 'none',
           headerTitle: '',
           headerTransparent: true,
-          headerTintColor: COLOR.White,
+          headerTintColor: '#ffff',
         }}
       />
       <MovieNav.Screen name="TicketBooking" component={TicketBookingView} />

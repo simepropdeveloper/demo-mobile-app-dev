@@ -1,15 +1,8 @@
 import * as React from 'react';
-import {
-  Text,
-  View,
-  TouchableHighlight,
-  Image,
-  useWindowDimensions,
-} from 'react-native';
+import {Text, View, TouchableHighlight, Image} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 const BFCard = () => {
-  const layout = useWindowDimensions();
   const [qty, setQty] = React.useState(0);
   return (
     <View className="flex-1 border-2 justify-center">
@@ -29,14 +22,14 @@ const BFCard = () => {
           10% off
         </Text>
       </View>
-      <Text className="text-whiteRGBA75 text-xs font-poppins_regular px-2">
+      <Text className="text-white/75 text-xs font-poppins_regular px-2">
         Double large popcorn and 4 pepsi
       </Text>
       <Text className="text-white text-xs font-poppins_bold line-through px-2 pt-2">
         $6000
       </Text>
       <View className="flex-row pb-4 px-2 items-start">
-        <Text className="text-whiteRGBA75 text-sm font-poppins_regular flex-1">
+        <Text className="text-white/75 text-sm font-poppins_regular flex-1">
           $5400
         </Text>
         <View className="flex-row flex-1 gap-4 items-start">
