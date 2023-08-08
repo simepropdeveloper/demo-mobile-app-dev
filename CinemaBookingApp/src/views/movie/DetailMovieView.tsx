@@ -15,7 +15,7 @@ import {
   getMovieCasts,
   getMovieDetails,
   getMovieReviews,
-} from '../../api/ApiHandler';
+} from '../../redux/reducers/ApiHandler';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 
@@ -23,31 +23,71 @@ import MovieTabView from '../../components/tabview/MovieTabView';
 import Genre from '../../components/container/Genre';
 import Star from '../../components/container/Star';
 import YoutubeIframe from 'react-native-youtube-iframe';
+import {useDispatch, useSelector} from 'react-redux';
+import {
+  getLoadBegin,
+  getLoadError,
+  getMovieShow,
+} from '../../redux/slices/showSlice';
 
-const DetailMovieView = ({navigation, route}: any) => {
+const DetailMovieView = ({navigation}: any) => {
+  const movies = useSelector((state: any) => state.movies);
+  const shows = useSelector((state: any) => state.shows);
+  const dispatch = useDispatch();
   const [urlTrailer, setUrlTrailer] = React.useState('');
   const [movieDetails, setMovieDetails] = React.useState<any>(null);
   const [movieCasts, setMovieCasts] = React.useState<any>(null);
   const [movieReviews, setMovieReviews] = React.useState<any>(null);
-
+  const [noShow, setNoShow] = React.useState(false);
   React.useEffect(() => {
+    const getShowById = async () => {
+      try {
+        dispatch(getLoadBegin());
+        let response = await fetch(
+          `http://192.168.1.7:8000/api/show_movie/${movies.selectMovie.id}`,
+          {
+            method: 'GET',
+            headers: {
+              Accept: 'application/json',
+              'Content-Type': 'application/json',
+            },
+          },
+        );
+        let json = await response.json();
+        dispatch(getMovieShow(json.results));
+      } catch (error) {
+        dispatch(getLoadError(error));
+      }
+    };
     (async () => {
-      let temp = await getMovieDetails(route.params.movieid);
+      await getShowById();
+      let temp = await getMovieDetails(movies.selectMovie.id);
       setMovieDetails(temp);
-      setUrlTrailer(temp.videos.results[0].key);
+      setUrlTrailer(
+        temp.videos.results.length !== 0 ? temp.videos.results[0].key : '',
+      );
 
-      let tempCasts = await getMovieCasts(route.params.movieid);
+      let tempCasts = await getMovieCasts(movies.selectMovie.id);
       setMovieCasts(tempCasts);
 
-      let tempReviews = await getMovieReviews(route.params.movieid);
+      let tempReviews = await getMovieReviews(movies.selectMovie.id);
       setMovieReviews(tempReviews);
     })();
-  }, [route.params.movieid]);
+  }, [dispatch, movies.selectMovie]);
 
   React.useEffect(() => {
-    console.log(urlTrailer);
-  }, [urlTrailer]);
-  if (movieDetails === null || movieCasts === null || movieReviews === null) {
+    if (shows.error === null && shows.movieShow.length !== 0) {
+      setNoShow(false);
+    } else {
+      setNoShow(true);
+    }
+  }, [shows.error, shows.movieShow.length]);
+  if (
+    movieDetails === null ||
+    movieCasts === null ||
+    movieReviews === null ||
+    shows.movieShow.loading
+  ) {
     return (
       <ScrollView
         className="bg-black"
@@ -64,19 +104,23 @@ const DetailMovieView = ({navigation, route}: any) => {
   return (
     <View className="bg-black flex-1">
       <ScrollView bounces={false}>
-        <YoutubeIframe
-          videoId={urlTrailer}
-          height={250}
-          width={width}
-          initialPlayerParams={{
-            modestbranding: true,
-          }}
-        />
-        {/* <Image
-          width={width}
-          height={200}
-          source={{uri: baseImagePath('w342', movieDetails.backdrop_path)}}
-        /> */}
+        {urlTrailer !== '' ? (
+          <YoutubeIframe
+            videoId={urlTrailer}
+            height={250}
+            width={width}
+            initialPlayerParams={{
+              modestbranding: true,
+            }}
+          />
+        ) : (
+          <Image
+            width={width}
+            height={200}
+            source={{uri: baseImagePath('w342', movieDetails.backdrop_path)}}
+          />
+        )}
+
         <View className="-mt-8 rounded-tl-2xl border-gray-500 rounded-tr-2xl bg-black justify-center items-center">
           <View className="flex-row m-5">
             <Image
@@ -153,9 +197,13 @@ const DetailMovieView = ({navigation, route}: any) => {
       </ScrollView>
       <TouchableOpacity
         className="rounded-md px-5 py-1 mx-5 mt-2 mb-5  bg-white/40 "
-        onPress={() => navigation.push('TicketBooking')}>
+        onPress={() => (!noShow ? navigation.push('TicketBooking') : '')}>
         <Text className="text-center font-poppins_bold text-white text-lg">
-          Book Ticket
+          {shows.loading
+            ? 'Loading...'
+            : noShow
+            ? 'No show found'
+            : 'Book Ticket'}
         </Text>
       </TouchableOpacity>
     </View>

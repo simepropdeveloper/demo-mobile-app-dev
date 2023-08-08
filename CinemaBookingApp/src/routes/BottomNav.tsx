@@ -6,7 +6,13 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import FavoriteView from '../views/favorite/FavoriteView';
 import MovieView from '../views/movie/MovieView';
-
+import {apiKey, baseUrl} from '../redux/reducers/ApiHandler';
+import {useDispatch} from 'react-redux';
+import {
+  getLoadBegin,
+  getLoadError,
+  getMovies,
+} from '../redux/slices/movieSlice';
 const Tab = createBottomTabNavigator();
 const IconTab = (focused: boolean, name: string) => {
   return (
@@ -23,6 +29,26 @@ const LabelTab = (focused: boolean, name: String) => {
   return <Text style={focused ? style.show : style.none}>{name}</Text>;
 };
 const BottomNav = () => {
+  const dispatch = useDispatch();
+
+  React.useEffect(() => {
+    const getMovieList = async (url: any) => {
+      dispatch(getLoadBegin());
+      try {
+        let response = await fetch(url);
+        let json = await response.json();
+        dispatch(getMovies(json.results));
+        // return json;
+      } catch (error) {
+        dispatch(getLoadError(error));
+      }
+    };
+    (async () => {
+      getMovieList(
+        `${baseUrl}/movie/now_playing?api_key=${apiKey}&language=en-US`,
+      );
+    })();
+  }, [dispatch]);
   return (
     <Tab.Navigator
       initialRouteName="Home"

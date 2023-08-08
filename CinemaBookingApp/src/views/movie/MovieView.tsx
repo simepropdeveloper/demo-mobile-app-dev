@@ -6,42 +6,20 @@ import {
   StatusBar,
   ActivityIndicator,
   FlatList,
+  Text,
 } from 'react-native';
 import HeaderUser from '../../components/container/HeaderUser';
 import SearchBar from '../../components/container/SearchBar';
 import CategoryText from '../../components/container/CategoryText';
 import MovieCard from '../../components/card/MovieCard';
-import {
-  baseImagePath,
-  getPopularMovies,
-  getTopRatedMovies,
-  getUpComingMovies,
-} from '../../api/ApiHandler';
+import {baseImagePath} from '../../redux/reducers/ApiHandler';
+import {useDispatch, useSelector} from 'react-redux';
+import {setMovieIdSelected} from '../../redux/slices/movieSlice';
 
 const MovieView = ({navigation}: any) => {
-  const [newMovieList, setNewMovieList] = React.useState([]);
-  const [popularMovieList, setPopularMovieList] = React.useState<any>(null);
-  const [recommendedMovieList, setRecommendedMovieList] =
-    React.useState<any>(null);
-
-  React.useEffect(() => {
-    (async () => {
-      let tempNewMovie = await getUpComingMovies();
-      setNewMovieList(tempNewMovie.results);
-
-      let tempPopular = await getPopularMovies();
-      setPopularMovieList(tempPopular.results);
-
-      let tempTopRated = await getTopRatedMovies();
-      setRecommendedMovieList(tempTopRated.results);
-    })();
-  }, []);
-
-  if (
-    recommendedMovieList == null ||
-    popularMovieList == null ||
-    newMovieList == null
-  ) {
+  const movies = useSelector((state: any) => state.movies);
+  const dispatch = useDispatch();
+  if (movies.loading) {
     return (
       <ScrollView
         className="bg-black"
@@ -57,6 +35,24 @@ const MovieView = ({navigation}: any) => {
         </View>
       </ScrollView>
     );
+  } else if (movies.error) {
+    return (
+      <ScrollView
+        className="bg-black"
+        bounces={false}
+        contentContainerStyle={{flex: 1}}>
+        <StatusBar hidden />
+
+        <HeaderUser />
+        <SearchBar />
+
+        <View className="flex-1 justify-center items-center">
+          <Text className="text-white font-poppins_bold text-center text-lg">
+            Something went wrong
+          </Text>
+        </View>
+      </ScrollView>
+    );
   }
 
   return (
@@ -66,7 +62,13 @@ const MovieView = ({navigation}: any) => {
         <SearchBar />
         <CategoryText title={'New Releases'} subtitle={'View All'} />
         <FlatList
-          data={newMovieList}
+          data={[...movies.movieList]
+            .sort(
+              (a: any, b: any) =>
+                new Date(a.release_date).valueOf() -
+                new Date(b.release_date).valueOf(),
+            )
+            .reverse()}
           keyExtractor={(item: any) => item.id}
           horizontal
           showsHorizontalScrollIndicator={false}
@@ -75,10 +77,11 @@ const MovieView = ({navigation}: any) => {
           renderItem={({item, index}) => (
             <MovieCard
               cardFunction={() => {
-                navigation.push('Booking', {movieid: item.id});
+                navigation.push('Booking');
+                dispatch(setMovieIdSelected(item));
               }}
               isFirst={index === 0 ? true : false}
-              isLast={index === newMovieList?.length - 1 ? true : false}
+              isLast={index === movies.movieList?.length - 1 ? true : false}
               title={item.original_title}
               imagePath={baseImagePath('w342', item.poster_path)}
             />
@@ -86,7 +89,9 @@ const MovieView = ({navigation}: any) => {
         />
         <CategoryText title={'Popular in cinemas'} subtitle={'View All'} />
         <FlatList
-          data={popularMovieList}
+          data={[...movies.movieList]
+            .sort((a: any, b: any) => a.popularity - b.popularity)
+            .reverse()}
           keyExtractor={(item: any) => item.id}
           horizontal
           showsHorizontalScrollIndicator={false}
@@ -95,10 +100,11 @@ const MovieView = ({navigation}: any) => {
           renderItem={({item, index}) => (
             <MovieCard
               cardFunction={() => {
-                navigation.push('Booking', {movieid: item.id});
+                navigation.push('Booking');
+                dispatch(setMovieIdSelected(item));
               }}
               isFirst={index === 0 ? true : false}
-              isLast={index === popularMovieList?.length - 1 ? true : false}
+              isLast={index === movies.movieList?.length - 1 ? true : false}
               title={item.original_title}
               imagePath={baseImagePath('w342', item.poster_path)}
             />
@@ -106,7 +112,9 @@ const MovieView = ({navigation}: any) => {
         />
         <CategoryText title={'Recommended for you'} subtitle={'View All'} />
         <FlatList
-          data={recommendedMovieList}
+          data={[...movies.movieList]
+            .sort((a: any, b: any) => a.vote_average - b.vote_average)
+            .reverse()}
           keyExtractor={(item: any) => item.id}
           horizontal
           showsHorizontalScrollIndicator={false}
@@ -115,10 +123,11 @@ const MovieView = ({navigation}: any) => {
           renderItem={({item, index}) => (
             <MovieCard
               cardFunction={() => {
-                navigation.push('Booking', {movieid: item.id});
+                navigation.push('Booking');
+                dispatch(setMovieIdSelected(item));
               }}
               isFirst={index === 0 ? true : false}
-              isLast={index === recommendedMovieList?.length - 1 ? true : false}
+              isLast={index === movies.movieList?.length - 1 ? true : false}
               title={item.original_title}
               imagePath={baseImagePath('w342', item.poster_path)}
             />

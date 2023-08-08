@@ -3,6 +3,9 @@ import {Text, View, ScrollView, FlatList, TouchableOpacity} from 'react-native';
 import Dropdown from '../../components/container/Dropdown';
 import FAIcon from 'react-native-vector-icons/FontAwesome';
 import FAAIcon from 'react-native-vector-icons/AntDesign';
+import {useSelector} from 'react-redux';
+import {Pusher, PusherEvent} from '@pusher/pusher-websocket-react-native';
+
 const month = [
   'January',
   'February',
@@ -17,15 +20,7 @@ const month = [
   'November',
   'December',
 ];
-const time = [
-  '9.20 AM',
-  '11.40 AM',
-  '1.20 PM',
-  '3.30 PM',
-  '5.40 PM',
-  '7.30 PM',
-  '9.20 PM',
-];
+
 const generateDates = () => {
   const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
   let date = new Date();
@@ -39,6 +34,9 @@ const generateDates = () => {
           date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + i,
         ).getDay()
       ],
+      all: new Date(date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + i)
+        .toISOString()
+        .split('T')[0],
     };
     arrayOfDate.push(obj);
   }
@@ -54,7 +52,7 @@ const generateSeats = () => {
     for (let j = 0; j < numColumn; j++) {
       let seatObject = {
         number: String.fromCharCode(i + 65) + (j + 1),
-        taken: Boolean(Math.round(Math.random())),
+        taken: false,
         selected: false,
       };
       columnSeats.push(seatObject);
@@ -70,14 +68,19 @@ const generateSeats = () => {
   return rowSeats;
 };
 const TicketBookingView = ({navigation}: any) => {
+  const shows = useSelector((state: any) => state.shows);
   const [selectedLocation, setSelectedLocation] =
     React.useState<any>(undefined);
   const [selectedTime, setSelectedTime] = React.useState<any>(undefined);
+  const [selectedCinema, setSelectedCinema] = React.useState<any>(undefined);
   const [selectedDate, setSelectedDate] = React.useState<any>(undefined);
   const [selectedSeats, setSelectedSeats] = React.useState([]);
   const [price, setPrice] = React.useState(0);
   const [availDate, setAvailDate] = React.useState(generateDates());
   const [availSeats, setAvailSeats] = React.useState(generateSeats());
+  const [availTime, setAvailTime] = React.useState<any>([]);
+  const [cinemas, setCinemas] = React.useState<any>([]);
+  const pusher = Pusher.getInstance();
 
   React.useEffect(() => {
     navigation.setOptions({
@@ -89,7 +92,80 @@ const TicketBookingView = ({navigation}: any) => {
       headerTintColor: 'white',
     });
   }, [navigation]);
+  React.useEffect(() => {
+    if (selectedDate !== undefined) {
+      const time: any = [];
+      shows.movieShow.map((item: any) => {
+        if (item.date === selectedDate.all) {
+          time.push(item.start_time);
+        }
+      });
+      setAvailTime([...new Set(time)]);
+    }
+  }, [availSeats, selectedDate, shows]);
+  React.useEffect(() => {
+    if (selectedTime !== undefined) {
+      console.log(selectedTime);
+      let num = shows.movieShow.filter(
+        (el: any) => el.start_time === selectedTime,
+      );
+      let tempSeat = availSeats;
+      tempSeat.map(seat => {
+        seat.map(subseat => {
+          let x = num.find((i: any) => i.seat_number === subseat.number);
+          if (x.seat_number === subseat.number) {
+            if (x.status === 'booked') {
+              subseat.taken = true;
+            } else {
+              subseat.taken = false;
+            }
+          }
+        });
+      });
+      setAvailSeats(tempSeat);
+    }
+  }, [availSeats, selectedTime, shows]);
+  React.useEffect(() => {
+    const getShowById = async () => {
+      try {
+        let response = await fetch(
+          `http://192.168.1.7:8000/api/cinema/${selectedLocation.value}`,
+          {
+            method: 'GET',
+            headers: {
+              Accept: 'application/json',
+              'Content-Type': 'application/json',
+            },
+          },
+        );
+        let json = await response.json();
+        let temp = [];
+        for (let i = 0; i < json.results.length; i++) {
+          let obj = {
+            id: json.results[i].cinema_id,
+            value: json.results[i].cinema_name,
+          };
+          temp.push(obj);
+        }
+        setCinemas(temp);
+      } catch (error) {}
+    };
+    (async () => {
+      await getShowById();
+      await pusher.init({
+        apiKey: 'f47dc8a2490a4a2e079b',
+        cluster: 'ap1',
+      });
 
+      await pusher.connect();
+      await pusher.subscribe({
+        channelName: 'seat-store',
+        onEvent: (event: PusherEvent) => {
+          console.log(`Event received: ${event}`);
+        },
+      });
+    })();
+  }, [selectedLocation, pusher]);
   const selectSeat = (index: number, subindex: number, seatNumber: String) => {
     if (!availSeats[index][subindex].taken) {
       let array: any = [...selectedSeats];
@@ -162,11 +238,8 @@ const TicketBookingView = ({navigation}: any) => {
             </Text>
             <Dropdown
               label="Select Cinema Hall"
-              data={[
-                {id: 1, value: 'Cinema XXI Sun Plaza'},
-                {id: 2, value: 'Cinema XXI Center Point'},
-              ]}
-              onSelect={setSelectedLocation}
+              data={cinemas}
+              onSelect={setSelectedCinema}
             />
           </View>
           {/* select date */}
@@ -205,7 +278,9 @@ const TicketBookingView = ({navigation}: any) => {
                         ? 'bg-gray-500 rounded-full'
                         : ''
                     }`}
-                    onPress={() => setSelectedDate(item)}>
+                    onPress={() => {
+                      setSelectedDate(item);
+                    }}>
                     <Text className="text-white font-poppins_semibold">
                       {item.day}
                     </Text>
@@ -223,7 +298,7 @@ const TicketBookingView = ({navigation}: any) => {
               Available Time
             </Text>
             <View className="flex-row flex-wrap gap-4 py-2">
-              {time.map(item => (
+              {availTime.map(item => (
                 <TouchableOpacity
                   key={item}
                   className={`border-2 border-white rounded px-2 py-1 ${
@@ -314,6 +389,7 @@ const TicketBookingView = ({navigation}: any) => {
                                   : 'rgba(255,255,255,0.35)'
                               }
                             />
+                            // <Text className="text-white">{subItem.number}</Text>
                           )}
                         </TouchableOpacity>
                       ))}

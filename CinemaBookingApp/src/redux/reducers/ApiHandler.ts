@@ -1,5 +1,5 @@
-const apiKey = 'eccfefb3035d071fb4dfee85f8552a92';
-const baseUrl = 'https://api.themoviedb.org/3';
+export const apiKey = 'eccfefb3035d071fb4dfee85f8552a92';
+export const baseUrl = 'https://api.themoviedb.org/3';
 
 export const baseImagePath = (size: string, path: string) => {
   return `https://image.tmdb.org/t/p/${size}${path}`;

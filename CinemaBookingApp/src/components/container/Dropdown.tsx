@@ -11,6 +11,7 @@ const Dropdown: React.FC<Props> = ({label, data, onSelect}) => {
   const [visible, setVisible] = React.useState(false);
   const DropdownButton = React.useRef<any>();
   const [dropdownTop, setDropdownTop] = React.useState(0);
+
   const renderList = (): React.ReactElement<any, any> => (
     <Modal visible={visible} transparent={true} animationType="none">
       <View className=" px-5 w-full absolute" style={{top: dropdownTop}}>

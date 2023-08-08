@@ -8,13 +8,12 @@ import PaymentView from '../views/payment/PaymentView';
 import BookingSummaryView from '../views/booking/BookingSummaryView';
 import BeverageFoodView from '../views/booking/BeverageFoodView';
 
-const BookingStack = ({route}: any) => {
+const BookingStack = () => {
   const MovieNav = createNativeStackNavigator();
   return (
     <MovieNav.Navigator screenOptions={{animation: 'none'}}>
       <MovieNav.Screen
         name="DetailMovie"
-        initialParams={{movieid: route.params.movieid}}
         component={DetailMovieView}
         options={{
           animation: 'none',
