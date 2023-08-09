@@ -1,10 +1,16 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import * as React from 'react';
 import {Text, View, ScrollView, FlatList, TouchableOpacity} from 'react-native';
 import Dropdown from '../../components/container/Dropdown';
 import FAIcon from 'react-native-vector-icons/FontAwesome';
 import FAAIcon from 'react-native-vector-icons/AntDesign';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {Pusher, PusherEvent} from '@pusher/pusher-websocket-react-native';
+import {
+  getLoadBegin,
+  getLoadError,
+  getMovieShow,
+} from '../../redux/slices/showSlice';
 
 const month = [
   'January',
@@ -21,22 +27,19 @@ const month = [
   'December',
 ];
 
-const generateDates = () => {
+const generateDates = (availDates: any) => {
   const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-  let date = new Date();
-  let lastDate = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+  // let date = new Date();
+  // let lastDate = new Date(date.getFullYear(), date.getMonth() + 1, 0);
   let arrayOfDate = [];
-  for (let i = date.getDate(); i < lastDate.getDate(); i++) {
+  for (let i = 0; i < availDates.length; i++) {
     let obj = {
-      date: i,
-      day: days[
-        new Date(
-          date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + i,
-        ).getDay()
-      ],
-      all: new Date(date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + i)
-        .toISOString()
-        .split('T')[0],
+      date: new Date(availDates[i]).getDate(),
+      day: days[new Date(availDates[i]).getDay()],
+      all: availDates[i],
+      // all: new Date(date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + i)
+      //   .toISOString()
+      //   .split('T')[0],
     };
     arrayOfDate.push(obj);
   }
@@ -69,6 +72,8 @@ const generateSeats = () => {
 };
 const TicketBookingView = ({navigation}: any) => {
   const shows = useSelector((state: any) => state.shows);
+  const movies = useSelector((state: any) => state.movies);
+  const dispatch = useDispatch();
   const [selectedLocation, setSelectedLocation] =
     React.useState<any>(undefined);
   const [selectedTime, setSelectedTime] = React.useState<any>(undefined);
@@ -76,7 +81,7 @@ const TicketBookingView = ({navigation}: any) => {
   const [selectedDate, setSelectedDate] = React.useState<any>(undefined);
   const [selectedSeats, setSelectedSeats] = React.useState([]);
   const [price, setPrice] = React.useState(0);
-  const [availDate, setAvailDate] = React.useState(generateDates());
+  const [availDate, setAvailDate] = React.useState([]);
   const [availSeats, setAvailSeats] = React.useState(generateSeats());
   const [availTime, setAvailTime] = React.useState<any>([]);
   const [cinemas, setCinemas] = React.useState<any>([]);
@@ -92,41 +97,9 @@ const TicketBookingView = ({navigation}: any) => {
       headerTintColor: 'white',
     });
   }, [navigation]);
+
   React.useEffect(() => {
-    if (selectedDate !== undefined) {
-      const time: any = [];
-      shows.movieShow.map((item: any) => {
-        if (item.date === selectedDate.all) {
-          time.push(item.start_time);
-        }
-      });
-      setAvailTime([...new Set(time)]);
-    }
-  }, [availSeats, selectedDate, shows]);
-  React.useEffect(() => {
-    if (selectedTime !== undefined) {
-      console.log(selectedTime);
-      let num = shows.movieShow.filter(
-        (el: any) => el.start_time === selectedTime,
-      );
-      let tempSeat = availSeats;
-      tempSeat.map(seat => {
-        seat.map(subseat => {
-          let x = num.find((i: any) => i.seat_number === subseat.number);
-          if (x.seat_number === subseat.number) {
-            if (x.status === 'booked') {
-              subseat.taken = true;
-            } else {
-              subseat.taken = false;
-            }
-          }
-        });
-      });
-      setAvailSeats(tempSeat);
-    }
-  }, [availSeats, selectedTime, shows]);
-  React.useEffect(() => {
-    const getShowById = async () => {
+    const getCinemaById = async () => {
       try {
         let response = await fetch(
           `http://192.168.1.7:8000/api/cinema/${selectedLocation.value}`,
@@ -151,7 +124,12 @@ const TicketBookingView = ({navigation}: any) => {
       } catch (error) {}
     };
     (async () => {
-      await getShowById();
+      await getCinemaById();
+    })();
+  }, [selectedLocation]);
+
+  React.useEffect(() => {
+    (async () => {
       await pusher.init({
         apiKey: 'f47dc8a2490a4a2e079b',
         cluster: 'ap1',
@@ -165,7 +143,100 @@ const TicketBookingView = ({navigation}: any) => {
         },
       });
     })();
-  }, [selectedLocation, pusher]);
+  }, [pusher]);
+
+  React.useEffect(() => {
+    (async () => {
+      if (selectedCinema !== undefined) {
+        try {
+          dispatch(getLoadBegin());
+          let response = await fetch(
+            `http://192.168.1.7:8000/api/show_movie/${movies.selectMovie.id}`,
+          );
+          let json = await response.json();
+          dispatch(
+            getMovieShow(
+              json.results
+                .filter(
+                  (item: any) => item.cinema_name === selectedCinema.value,
+                )
+                .sort(
+                  (a: any, b: any) =>
+                    new Date(a.date).valueOf() - new Date(b.date).valueOf(),
+                )
+                .reverse(),
+            ),
+          );
+          let dates: any = [];
+          shows.movieShow.map((item: any) => dates.push(item.date));
+
+          setAvailDate(generateDates([...new Set(dates)]));
+        } catch (error) {
+          dispatch(getLoadError(error));
+        }
+      }
+    })();
+  }, [selectedCinema]);
+
+  React.useEffect(() => {
+    if (selectedDate !== undefined) {
+      const time: any = [];
+      shows.movieShow.map((item: any) => {
+        if (item.date === selectedDate.all) {
+          time.push(item.start_time);
+        }
+      });
+      setAvailTime([...new Set(time)]);
+    }
+  }, [selectedDate]);
+  React.useEffect(() => {
+    if (selectedTime !== undefined) {
+      let num = shows.movieShow.filter(
+        (el: any) => el.start_time === selectedTime,
+      );
+      let tempSeat = availSeats;
+      tempSeat.map(seat => {
+        seat.map(subseat => {
+          let x = num.find((i: any) => i.seat_number === subseat.number);
+          if (x.seat_number === subseat.number) {
+            if (x.status === 'booked') {
+              subseat.taken = true;
+            } else if (x.status === 'selected') {
+              subseat.selected = true;
+            } else {
+              subseat.selected = false;
+              subseat.taken = false;
+            }
+          }
+        });
+      });
+      setAvailSeats(tempSeat);
+    }
+  }, [selectedTime]);
+
+  const getHallId = (seatNum: any) => {
+    let hallId = '';
+    shows.movieShow.find((a: any) => {
+      if (
+        a.start_time === selectedTime &&
+        a.cinema_name === selectedCinema.value &&
+        a.date === selectedDate.all
+      ) {
+        hallId = a.cinema_hall_id;
+      }
+    });
+    const requestOptions = {
+      method: 'PUT',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({status: 'selected', seat_number: seatNum}),
+    };
+    fetch(
+      `http://192.168.1.7:8000/api/update_seat/${hallId}`,
+      requestOptions,
+    ).then(response => {
+      console.log(response.json());
+    });
+  };
   const selectSeat = (index: number, subindex: number, seatNumber: String) => {
     if (!availSeats[index][subindex].taken) {
       let array: any = [...selectedSeats];
@@ -174,6 +245,8 @@ const TicketBookingView = ({navigation}: any) => {
       if (!array.includes(seatNumber)) {
         if (selectedSeats.length < 6) {
           array.push(seatNumber);
+          getHallId(seatNumber);
+
           setSelectedSeats(array);
         }
       } else {
@@ -227,7 +300,6 @@ const TicketBookingView = ({navigation}: any) => {
               data={[
                 {id: 1, value: 'Medan'},
                 {id: 2, value: 'Jakarta'},
-                {id: 3, value: 'Surabaya'},
               ]}
               onSelect={setSelectedLocation}
             />
@@ -242,168 +314,168 @@ const TicketBookingView = ({navigation}: any) => {
               onSelect={setSelectedCinema}
             />
           </View>
-          {/* select date */}
           <View>
-            <Text className="font-poppins_medium text-white">
-              Select a date
-            </Text>
-            <View className="flex-row items-center gap-3">
-              <FAIcon
-                name="caret-left"
-                size={15}
-                color="rgba(255,255,255,0.75)"
-              />
-              <Text className="font-poppins_medium text-white/75">
-                {month[new Date().getMonth()]}
+            {/* select date */}
+            <View>
+              <Text className="font-poppins_medium text-white">
+                Select a date
               </Text>
-              <FAIcon
-                name="caret-right"
-                size={15}
-                color="rgba(255,255,255,0.75)"
+              <View className="flex-row items-center gap-3">
+                <FAIcon
+                  name="caret-left"
+                  size={15}
+                  color="rgba(255,255,255,0.75)"
+                />
+                <Text className="font-poppins_medium text-white/75">
+                  {month[new Date().getMonth()]}
+                </Text>
+                <FAIcon
+                  name="caret-right"
+                  size={15}
+                  color="rgba(255,255,255,0.75)"
+                />
+              </View>
+              <FlatList
+                className="py-2"
+                data={availDate}
+                keyExtractor={(item: any) => item}
+                horizontal
+                bounces={false}
+                contentContainerStyle={{gap: 10}}
+                renderItem={({item}) => {
+                  return (
+                    <TouchableOpacity
+                      className={`items-center p-1 min-w-[40] ${
+                        selectedDate !== undefined &&
+                        selectedDate.date === item.date
+                          ? 'bg-gray-500 rounded-full'
+                          : ''
+                      }`}
+                      onPress={() => {
+                        setSelectedDate(item);
+                      }}>
+                      <Text className="text-white font-poppins_semibold">
+                        {item.day}
+                      </Text>
+                      <Text className="text-white/75 font-poppins_medium">
+                        {item.date}
+                      </Text>
+                    </TouchableOpacity>
+                  );
+                }}
               />
             </View>
-            <FlatList
-              className="py-2"
-              data={availDate}
-              keyExtractor={(item: any) => item.date}
-              horizontal
-              bounces={false}
-              contentContainerStyle={{gap: 10}}
-              renderItem={({item}) => {
-                return (
+            {/* select time */}
+            <View>
+              <Text className="font-poppins_medium text-white">
+                Available Time
+              </Text>
+              <View className="flex-row flex-wrap gap-4 py-2">
+                {availTime.map((item: any) => (
                   <TouchableOpacity
-                    className={`items-center p-1 min-w-[40] ${
-                      selectedDate !== undefined &&
-                      selectedDate.date === item.date
-                        ? 'bg-gray-500 rounded-full'
-                        : ''
+                    key={item}
+                    className={`border-2 border-white rounded px-2 py-1 ${
+                      selectedTime === item ? 'bg-gray-500' : ''
                     }`}
-                    onPress={() => {
-                      setSelectedDate(item);
-                    }}>
-                    <Text className="text-white font-poppins_semibold">
-                      {item.day}
-                    </Text>
-                    <Text className="text-white/75 font-poppins_medium">
-                      {item.date}
+                    onPress={() => setSelectedTime(item)}>
+                    <Text className="text-white font-poppins_medium">
+                      {item}
                     </Text>
                   </TouchableOpacity>
-                );
-              }}
-            />
-          </View>
-          {/* select time */}
-          <View>
-            <Text className="font-poppins_medium text-white">
-              Available Time
-            </Text>
-            <View className="flex-row flex-wrap gap-4 py-2">
-              {availTime.map(item => (
-                <TouchableOpacity
-                  key={item}
-                  className={`border-2 border-white rounded px-2 py-1 ${
-                    selectedTime === item ? 'bg-gray-500' : ''
-                  }`}
-                  onPress={() => setSelectedTime(item)}>
-                  <Text className="text-white font-poppins_medium">{item}</Text>
-                </TouchableOpacity>
-              ))}
-            </View>
-          </View>
-          {/* select seat */}
-          <View className="py-4">
-            <Text className="text-white font-poppins_medium text-center">
-              Select Seat
-            </Text>
-            <View className="flex-row py-2">
-              <View className="flex-1 flex-row items-center justify-start gap-1">
-                <FAIcon
-                  name="square"
-                  size={18}
-                  color={'rgba(255,255,255,0.35)'}
-                />
-                <Text className="text-white/75 font-poppins_medium text-center text-sm">
-                  Available
-                </Text>
-              </View>
-              <View className="flex-1 flex-row gap-1 items-center justify-center">
-                <FAAIcon
-                  name="closesquare"
-                  size={18}
-                  color={'rgba(255,255,255,0.55)'}
-                />
-                <Text className="text-white/75 font-poppins_medium text-center text-sm">
-                  Unavailable
-                </Text>
-              </View>
-              <View className="flex-1 flex-row items-center gap-1 justify-end">
-                <FAIcon
-                  name="square"
-                  size={18}
-                  color={'rgba(255,255,255,0.75)'}
-                />
-                <Text className="text-white/75 font-poppins_medium text-center text-sm">
-                  Selected
-                </Text>
+                ))}
               </View>
             </View>
-            <View className="py-5">
-              <View className="w-full  border-white/75 border-t-8 rounded-full">
-                <Text className="text-white/75 text-xs font-poppins_medium text-center py-4">
-                  Screen
-                </Text>
+            {/* select seat */}
+            <View className="py-4">
+              <Text className="text-white font-poppins_medium text-center">
+                Select Seat
+              </Text>
+              <View className="flex-row py-2">
+                <View className="flex-1 flex-row items-center justify-start gap-1">
+                  <FAIcon
+                    name="square"
+                    size={18}
+                    color={'rgba(255,255,255,0.35)'}
+                  />
+                  <Text className="text-white/75 font-poppins_medium text-center text-sm">
+                    Available
+                  </Text>
+                </View>
+                <View className="flex-1 flex-row gap-1 items-center justify-center">
+                  <FAAIcon
+                    name="closesquare"
+                    size={18}
+                    color={'rgba(255,255,255,0.55)'}
+                  />
+                  <Text className="text-white/75 font-poppins_medium text-center text-sm">
+                    Unavailable
+                  </Text>
+                </View>
+                <View className="flex-1 flex-row items-center gap-1 justify-end">
+                  <FAIcon
+                    name="square"
+                    size={18}
+                    color={'rgba(255,255,255,0.75)'}
+                  />
+                  <Text className="text-white/75 font-poppins_medium text-center text-sm">
+                    Selected
+                  </Text>
+                </View>
               </View>
+              <View className="py-5">
+                <View className="w-full  border-white/75 border-t-8 rounded-full">
+                  <Text className="text-white/75 text-xs font-poppins_medium text-center py-4">
+                    Screen
+                  </Text>
+                </View>
 
-              <View className="flex-row items-center  ">
-                <View className="gap-4 justify-center">
-                  {['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'].map((item, idx) => (
-                    <Text
-                      className="font-poppins_medium text-white/75 text-base"
-                      key={`${item}-${idx}-1`}>
-                      {item}
-                    </Text>
-                  ))}
-                </View>
-                <View className="  items-center justify-center flex-1">
-                  {availSeats.map((item, index) => (
-                    <View className="flex-row items-center justify-center gap-4 py-2">
-                      {item.map((subItem, subIndex) => (
-                        <TouchableOpacity
-                          key={subItem.number}
-                          onPress={() =>
-                            selectSeat(index, subIndex, subItem.number)
-                          }>
-                          {subItem.taken ? (
-                            <FAAIcon
-                              name="closesquare"
-                              size={22}
-                              color={'rgba(255,255,255,0.55)'}
-                            />
-                          ) : (
-                            <FAIcon
-                              name="square"
-                              size={23}
-                              color={
-                                subItem.selected
-                                  ? 'rgba(255,255,255,0.75)'
-                                  : 'rgba(255,255,255,0.35)'
-                              }
-                            />
-                            // <Text className="text-white">{subItem.number}</Text>
-                          )}
-                        </TouchableOpacity>
-                      ))}
-                    </View>
-                  ))}
-                </View>
-                <View className="gap-4 justify-center">
-                  {['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'].map((item, idx) => (
-                    <Text
-                      className="font-poppins_medium text-white/75 text-base"
-                      key={`${item}-${idx}-2`}>
-                      {item}
-                    </Text>
-                  ))}
+                <View className="flex-row items-center  ">
+                  <View className="gap-4 justify-center">
+                    {['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'].map(item => (
+                      <Text className="font-poppins_medium text-white/75 text-base">
+                        {item}
+                      </Text>
+                    ))}
+                  </View>
+                  <View className="  items-center justify-center flex-1">
+                    {availSeats.map((item, index) => (
+                      <View className="flex-row items-center justify-center gap-4 py-2">
+                        {item.map((subItem, subIndex) => (
+                          <TouchableOpacity
+                            key={subItem.number}
+                            onPress={() =>
+                              selectSeat(index, subIndex, subItem.number)
+                            }>
+                            {subItem.taken ? (
+                              <FAAIcon
+                                name="closesquare"
+                                size={22}
+                                color={'rgba(255,255,255,0.55)'}
+                              />
+                            ) : (
+                              <FAIcon
+                                name="square"
+                                size={23}
+                                color={
+                                  subItem.selected
+                                    ? 'rgba(255,255,255,0.75)'
+                                    : 'rgba(255,255,255,0.35)'
+                                }
+                              />
+                              // <Text className="text-white">{subItem.number}</Text>
+                            )}
+                          </TouchableOpacity>
+                        ))}
+                      </View>
+                    ))}
+                  </View>
+                  <View className="gap-4 justify-center">
+                    {['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'].map(item => (
+                      <Text className="font-poppins_medium text-white/75 text-base">
+                        {item}
+                      </Text>
+                    ))}
+                  </View>
                 </View>
               </View>
             </View>
@@ -440,14 +512,26 @@ const TicketBookingView = ({navigation}: any) => {
             </View>
           )}
           <View className="flex-row gap-4 px-5 ">
-            <TouchableOpacity className="bg-white rounded flex-1 py-1">
+            <TouchableOpacity
+              className="bg-white rounded flex-1 py-1"
+              onPress={() => navigation.goBack()}>
               <Text className=" text-black font-poppins_bold text-lg text-center">
                 Cancel
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
               className="bg-gray-500 rounded flex-1 py-1"
-              onPress={() => navigation.push('BeverageFood')}>
+              onPress={() => {
+                // dispatch(
+                //   setBooking({
+                //     date: selectedDate,
+                //     cinema: selectedCinema,
+                //     seats: selectedSeats,
+                //     startTime: selectedTime,
+                //   }),
+                // );
+                navigation.push('BeverageFood');
+              }}>
               <Text className=" text-white font-poppins_bold text-lg text-center">
                 Proceed
               </Text>

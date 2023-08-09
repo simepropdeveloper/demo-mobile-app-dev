@@ -1,7 +1,11 @@
 import * as React from 'react';
 import {Text, View, Image} from 'react-native';
+import {useSelector} from 'react-redux';
+import {baseImagePath} from '../../redux/reducers/ApiHandler';
 
 const TicketCard = () => {
+  const movies = useSelector((state: any) => state.movies);
+  // const booking = useSelector((state: any) => state.booking);
   return (
     <View className="rounded-sm border-gray-400 border-2 py-4">
       <View className="flex-col">
@@ -11,18 +15,24 @@ const TicketCard = () => {
             width={120}
             height={150}
             source={{
-              uri: 'https://lumiere-a.akamaihd.net/v1/images/poster-id-payoff_ce62087b.jpeg',
+              uri: baseImagePath('w342', movies.selectMovie.poster_path),
             }}
           />
           <View className="flex-1 ">
             <Text className="text-white font-poppins_bold text-lg py-[0.5]">
-              {'The Little Mermaid'}
+              {movies.selectMovie.title}
             </Text>
             <Text className="text-white/50 font-poppins_regular text-xs py-[0.5]">
-              {'Adventure, Family, Fantasy, Romance'}
+              {/* {'Adventure, Family, Fantasy, Romance'} */}
+              {movies.selectMovie.genres
+                .map((item: any) => item.name)
+                .join(',')}
             </Text>
             <Text className="text-white/50 font-poppins_regular text-xs py-[0.5]">
-              {'1h 37m'}
+              {`${Math.floor(movies.selectMovie.runtime / 60)}h ${
+                movies.selectMovie.runtime -
+                Math.floor(movies.selectMovie.runtime / 60) * 60
+              }m`}
             </Text>
             <Text className="text-white/50 font-poppins_regular text-xs py-[0.5]">
               {'English IMDb 3D'}

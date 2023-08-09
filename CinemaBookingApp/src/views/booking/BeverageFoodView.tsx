@@ -93,7 +93,9 @@ const BeverageFoodView = ({navigation}: any) => {
         )}
         <TouchableOpacity
           className="bg-gray-500 rounded py-1 mx-5"
-          onPress={() => navigation.push('Payment')}>
+          onPress={() => {
+            navigation.push('BookingSummary');
+          }}>
           <Text className=" text-white font-poppins_bold text-lg text-center">
             Proceed
           </Text>

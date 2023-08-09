@@ -24,11 +24,8 @@ import Genre from '../../components/container/Genre';
 import Star from '../../components/container/Star';
 import YoutubeIframe from 'react-native-youtube-iframe';
 import {useDispatch, useSelector} from 'react-redux';
-import {
-  getLoadBegin,
-  getLoadError,
-  getMovieShow,
-} from '../../redux/slices/showSlice';
+
+import {setMovieIdSelected} from '../../redux/slices/movieSlice';
 
 const DetailMovieView = ({navigation}: any) => {
   const movies = useSelector((state: any) => state.movies);
@@ -38,31 +35,13 @@ const DetailMovieView = ({navigation}: any) => {
   const [movieDetails, setMovieDetails] = React.useState<any>(null);
   const [movieCasts, setMovieCasts] = React.useState<any>(null);
   const [movieReviews, setMovieReviews] = React.useState<any>(null);
-  const [noShow, setNoShow] = React.useState(false);
+  // const [noShow, setNoShow] = React.useState(false);
   React.useEffect(() => {
-    const getShowById = async () => {
-      try {
-        dispatch(getLoadBegin());
-        let response = await fetch(
-          `http://192.168.1.7:8000/api/show_movie/${movies.selectMovie.id}`,
-          {
-            method: 'GET',
-            headers: {
-              Accept: 'application/json',
-              'Content-Type': 'application/json',
-            },
-          },
-        );
-        let json = await response.json();
-        dispatch(getMovieShow(json.results));
-      } catch (error) {
-        dispatch(getLoadError(error));
-      }
-    };
     (async () => {
-      await getShowById();
+      // await getShowById();
       let temp = await getMovieDetails(movies.selectMovie.id);
       setMovieDetails(temp);
+      dispatch(setMovieIdSelected(temp));
       setUrlTrailer(
         temp.videos.results.length !== 0 ? temp.videos.results[0].key : '',
       );
@@ -75,13 +54,13 @@ const DetailMovieView = ({navigation}: any) => {
     })();
   }, [dispatch, movies.selectMovie]);
 
-  React.useEffect(() => {
-    if (shows.error === null && shows.movieShow.length !== 0) {
-      setNoShow(false);
-    } else {
-      setNoShow(true);
-    }
-  }, [shows.error, shows.movieShow.length]);
+  // React.useEffect(() => {
+  //   if (shows.error === null && shows.movieShow.length !== 0) {
+  //     setNoShow(false);
+  //   } else {
+  //     setNoShow(true);
+  //   }
+  // }, [shows.error, shows.movieShow.length]);
   if (
     movieDetails === null ||
     movieCasts === null ||
@@ -197,13 +176,9 @@ const DetailMovieView = ({navigation}: any) => {
       </ScrollView>
       <TouchableOpacity
         className="rounded-md px-5 py-1 mx-5 mt-2 mb-5  bg-white/40 "
-        onPress={() => (!noShow ? navigation.push('TicketBooking') : '')}>
+        onPress={() => navigation.push('TicketBooking')}>
         <Text className="text-center font-poppins_bold text-white text-lg">
-          {shows.loading
-            ? 'Loading...'
-            : noShow
-            ? 'No show found'
-            : 'Book Ticket'}
+          Book Ticket
         </Text>
       </TouchableOpacity>
     </View>
