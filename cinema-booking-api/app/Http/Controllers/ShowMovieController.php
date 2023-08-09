@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cinema;
+use App\Events\SeatEvent;
 use App\Models\MovieShow;
 use App\Models\CinemaHall;
 use Illuminate\Http\Request;
 use App\Models\CinemaAndHall;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class ShowMovieController extends Controller
 {
@@ -24,7 +26,8 @@ class ShowMovieController extends Controller
         ->join('hall_and_seat','hall_and_seat.cinema_hall_id','=','movie_show.cinema_hall_id')
         ->join('cinema_seat','hall_and_seat.seat_number','=','cinema_seat.seat_number')
         ->join('cinema_hall','hall_and_seat.cinema_hall_id','=','cinema_hall.cinema_hall_id')
-        ->select('movie_show.*','cinema_seat.*','cinema_hall.cinema_hall_name','hall_and_seat.status')
+        ->join('cinema','cinema.cinema_id','=','cinema_hall.cinema_id')
+        ->select('movie_show.*','cinema_seat.*','cinema_hall.cinema_hall_name','hall_and_seat.status','cinema.*')
         ->get();
         if ($items){
             return response(['results' => $items, 'status' => 200]);
@@ -36,5 +39,17 @@ class ShowMovieController extends Controller
         // $items = $this->model->with('halls')->get();
         
         return response(['results' => $items, 'status' => 200]);
+    }
+
+    public function update(Request $request, String $id){
+        $seat = DB::table('hall_and_seat')->where('cinema_hall_id',$id)
+        ->where('seat_number',$request->seat_number)->first();
+        if ($seat){
+            $seat->update($request->only(['status']));
+            event(new SeatEvent( $seat->find($seat->id) ));
+        }
+
+        return $this->index();
+        // return response(['results' => $request, 'status' => 200]);
     }
 }
