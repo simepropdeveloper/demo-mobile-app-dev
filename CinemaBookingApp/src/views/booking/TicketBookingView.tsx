@@ -71,6 +71,7 @@ const generateSeats = () => {
   return rowSeats;
 };
 const TicketBookingView = ({navigation}: any) => {
+  const url = 'http://192.168.1.7:8000';
   const shows = useSelector((state: any) => state.shows);
   const movies = useSelector((state: any) => state.movies);
   const dispatch = useDispatch();
@@ -102,7 +103,7 @@ const TicketBookingView = ({navigation}: any) => {
     const getCinemaById = async () => {
       try {
         let response = await fetch(
-          `http://192.168.1.7:8000/api/cinema/${selectedLocation.value}`,
+          `${url}/api/cinema/${selectedLocation.value}`,
           {
             method: 'GET',
             headers: {
@@ -151,7 +152,7 @@ const TicketBookingView = ({navigation}: any) => {
         try {
           dispatch(getLoadBegin());
           let response = await fetch(
-            `http://192.168.1.7:8000/api/show_movie/${movies.selectMovie.id}`,
+            `${url}/api/show_movie/${movies.selectMovie.id}`,
           );
           let json = await response.json();
           dispatch(
@@ -230,10 +231,7 @@ const TicketBookingView = ({navigation}: any) => {
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({status: 'selected', seat_number: seatNum}),
     };
-    fetch(
-      `http://192.168.1.7:8000/api/update_seat/${hallId}`,
-      requestOptions,
-    ).then(response => {
+    fetch(`${url}/api/update_seat/${hallId}`, requestOptions).then(response => {
       console.log(response.json());
     });
   };
