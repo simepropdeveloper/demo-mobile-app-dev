@@ -100,6 +100,23 @@ const TicketBookingView = ({navigation}: any) => {
   }, [navigation]);
 
   React.useEffect(() => {
+    (async () => {
+      await pusher.init({
+        apiKey: 'f47dc8a2490a4a2e079b',
+        cluster: 'ap1',
+      });
+
+      await pusher.connect();
+      await pusher.subscribe({
+        channelName: 'seat-store',
+        onEvent: (event: PusherEvent) => {
+          console.log(`Event received: ${event}`);
+        },
+      });
+    })();
+  }, [pusher]);
+
+  React.useEffect(() => {
     const getCinemaById = async () => {
       try {
         let response = await fetch(
@@ -128,23 +145,6 @@ const TicketBookingView = ({navigation}: any) => {
       await getCinemaById();
     })();
   }, [selectedLocation]);
-
-  React.useEffect(() => {
-    (async () => {
-      await pusher.init({
-        apiKey: 'f47dc8a2490a4a2e079b',
-        cluster: 'ap1',
-      });
-
-      await pusher.connect();
-      await pusher.subscribe({
-        channelName: 'seat-store',
-        onEvent: (event: PusherEvent) => {
-          console.log(`Event received: ${event}`);
-        },
-      });
-    })();
-  }, [pusher]);
 
   React.useEffect(() => {
     (async () => {
@@ -215,7 +215,7 @@ const TicketBookingView = ({navigation}: any) => {
     }
   }, [selectedTime]);
 
-  const getHallId = (seatNum: any) => {
+  const getHallId = (seatNum: any, st: String) => {
     let hallId = '';
     shows.movieShow.find((a: any) => {
       if (
@@ -229,7 +229,11 @@ const TicketBookingView = ({navigation}: any) => {
     const requestOptions = {
       method: 'PUT',
       headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({status: 'selected', seat_number: seatNum}),
+      body: JSON.stringify({
+        status: st,
+        seat_number: seatNum,
+        movie_id: movies.selectMovie.id,
+      }),
     };
     fetch(`${url}/api/update_seat/${hallId}`, requestOptions).then(response => {
       console.log(response.json());
@@ -243,7 +247,7 @@ const TicketBookingView = ({navigation}: any) => {
       if (!array.includes(seatNumber)) {
         if (selectedSeats.length < 6) {
           array.push(seatNumber);
-          getHallId(seatNumber);
+          getHallId(seatNumber, 'selected');
 
           setSelectedSeats(array);
         }
@@ -251,6 +255,7 @@ const TicketBookingView = ({navigation}: any) => {
         const tempindex = array.indexOf(seatNumber);
         if (tempindex > -1) {
           array.splice(tempindex, 1);
+          getHallId(seatNumber, 'available');
           setSelectedSeats(array);
         }
       }
@@ -267,7 +272,7 @@ const TicketBookingView = ({navigation}: any) => {
             Where would you like to see the movie? Kindly select as appropiate
           </Text>
           <FlatList
-            keyExtractor={(item: any) => item}
+            // keyExtractor={(item: any) => item}
             bounces={false}
             showsHorizontalScrollIndicator={false}
             data={[
@@ -336,11 +341,11 @@ const TicketBookingView = ({navigation}: any) => {
               <FlatList
                 className="py-2"
                 data={availDate}
-                keyExtractor={(item: any) => item}
+                // keyExtractor={(item: any) => item}
                 horizontal
                 bounces={false}
                 contentContainerStyle={{gap: 10}}
-                renderItem={({item}) => {
+                renderItem={({item}: any) => {
                   return (
                     <TouchableOpacity
                       className={`items-center p-1 min-w-[40] ${
@@ -371,7 +376,7 @@ const TicketBookingView = ({navigation}: any) => {
               <View className="flex-row flex-wrap gap-4 py-2">
                 {availTime.map((item: any) => (
                   <TouchableOpacity
-                    key={item}
+                    // key={item}
                     className={`border-2 border-white rounded px-2 py-1 ${
                       selectedTime === item ? 'bg-gray-500' : ''
                     }`}
@@ -440,7 +445,7 @@ const TicketBookingView = ({navigation}: any) => {
                       <View className="flex-row items-center justify-center gap-4 py-2">
                         {item.map((subItem, subIndex) => (
                           <TouchableOpacity
-                            key={subItem.number}
+                            // key={subItem.number}
                             onPress={() =>
                               selectSeat(index, subIndex, subItem.number)
                             }>
@@ -488,9 +493,7 @@ const TicketBookingView = ({navigation}: any) => {
                 <Text className="text-white/75 font-poppins_medium">SEAT</Text>
                 <View className="flex-row flex-wrap gap-2 ">
                   {selectedSeats.map(item => (
-                    <View
-                      className=" rounded border-white border-[1px] px-1"
-                      key={item}>
+                    <View className=" rounded border-white border-[1px] px-1">
                       <Text className="text-white font-poppins_medium text-xs">
                         {item}
                       </Text>

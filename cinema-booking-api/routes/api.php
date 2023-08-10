@@ -22,5 +22,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::get('/show_movie/{id}',[ShowMovieController::class,"index"]);
 Route::get('/cinema/{id}',[CinemaController::class,"index"]);
-Route::post('/update_seat/{id}',[ShowMovieController::class,"update"]);
+Route::put('/update_seat/{id}',[ShowMovieController::class,"update"]);
 // Route::apiResource('/cinema/{id}',CinemaController::class);

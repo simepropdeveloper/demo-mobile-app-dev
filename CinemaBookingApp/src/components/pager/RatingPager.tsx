@@ -17,10 +17,12 @@ interface Props {
   movie: any;
   reviews: any;
 }
+
 const RatingPager: React.FC<Props> = ({movie, reviews}) => {
   const [rates, setRates] = React.useState<Rating>();
 
   React.useEffect(() => {
+    console.log('msk');
     let rating: Rating = {
       '5star': 0,
       '4star': 0,
@@ -64,13 +66,11 @@ const RatingPager: React.FC<Props> = ({movie, reviews}) => {
       <View className="border-white/50 mx-5 border-b-[0.6px]" />
       <View className="mx-5 my-2">
         {[1, 2, 3, 4, 5].reverse().map(idx => (
-          <View className="flex-row items-center" key={idx}>
+          <View className="flex-row items-center">
             <View className="flex-row items-center flex-1 gap-1">
-              {[...Array(idx)].map(idx1 => (
+              {[...Array(idx)].map(() => (
                 <Icon
-                  key={`idx-${Math.floor(Math.random() * 1000 + 1)}-${
-                    idx1 + 1 * 5
-                  }`}
+                  key={`idx-${Math.floor(Math.random() * 1000 + 1)}-${idx}`}
                   name="star"
                   className="py-1 "
                   color="rgb(250 204 21)"

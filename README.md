@@ -8,4 +8,12 @@
 5. Run front end application: npx react-native start --reset-cache.
 
 Notes:
+
+There are still room to improve, here is some list bugs:
+
+1. Pusher event has not been received, even though there is updated data from the database.
+2. To many render in TicketBookingView.
+3. Data beverage and food is still static data.
+4. Other bugs that may not have been found.
+
 I have tried to answer most of the questions asked. I may not have 100% correct answer. in my opinion, IT is evolved and I believe it is important that we keep learning the new technology. I am open and fast learner.
